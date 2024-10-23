@@ -7,11 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(StudentNotFoundException.class)
-    ResponseEntity<AppExceptionResponse> handleAuthenticationException(StudentNotFoundException exception) {
+    ResponseEntity<AppExceptionResponse> handleStudentNotFoundException(StudentNotFoundException exception) {
+        return buildExceptionResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    // todo Make SQLException handler safer, we can't give messages from SQL to client
+    @ExceptionHandler(SQLException.class)
+    ResponseEntity<AppExceptionResponse> handleSqlException(SQLException exception) {
         return buildExceptionResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 

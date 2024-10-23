@@ -5,7 +5,7 @@ import com.project.studentservice.model.entity.Student;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface StudentMapper {
+public interface StudentDtoMapper {
 
     StudentDto toDto(Student student);
 
