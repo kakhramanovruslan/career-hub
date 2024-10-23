@@ -29,6 +29,7 @@
 
 	<modules>
 		<module>student-service</module>
+		<module>university-service</module>
 	</modules>
 
 	<properties>
