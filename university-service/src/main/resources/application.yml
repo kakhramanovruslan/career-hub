@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: university-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/university_service_db
+    username: postgres
+    password: o130805o
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: db/changelog/changelog-master.yml
+
+server:
+  port: 8081

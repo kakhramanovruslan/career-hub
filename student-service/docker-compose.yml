@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
   postgres:
-    image: postgres:16.2
+    image: postgres:15
     container_name: student_service_db
     restart: always
     ports:
-      - "5433:5432"
+      - "5434:5432"
     environment:
       POSTGRES_DB: student_service_db
-      POSTGRES_USER: ruslan
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: o130805o
