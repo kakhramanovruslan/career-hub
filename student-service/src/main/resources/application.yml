@@ -8,3 +8,6 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: db/changelog/changelog-master.yml
+
+server:
+  port: 8081

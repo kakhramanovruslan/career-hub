@@ -1,4 +1,4 @@
-package com.project.studentservice.exception;
+package com.project.studentservice.util;
 
 public class ExceptionMessages {
 

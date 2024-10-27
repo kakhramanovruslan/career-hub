@@ -1,6 +1,6 @@
 package com.project.studentservice.service.impl;
 
-import com.project.studentservice.exception.ExceptionMessages;
+import com.project.studentservice.util.ExceptionMessages;
 import com.project.studentservice.exception.StudentNotFoundException;
 import com.project.studentservice.mapper.StudentDtoMapper;
 import com.project.studentservice.mapper.StudentRequestMapper;

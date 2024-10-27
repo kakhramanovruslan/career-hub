@@ -30,6 +30,8 @@
 	<modules>
 		<module>student-service</module>
 		<module>university-service</module>
+		<module>company-service</module>
+		<module>api-gateway</module>
 	</modules>
 
 	<properties>
