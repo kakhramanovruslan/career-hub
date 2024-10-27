@@ -1,6 +1,12 @@
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        student-server-url: http://localhost:8081
+        university-server-url: http://localhost:8082
+        company-server-url: http://localhost:8083
 
 server:
   port: 8080
