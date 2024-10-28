@@ -7,6 +7,20 @@ spring:
         student-server-url: http://localhost:8081
         university-server-url: http://localhost:8082
         company-server-url: http://localhost:8083
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: api-gateway
+            client-secret: ngdiebgkS2hhk9V7u2y83TGxY5otsNQg
+            authorization-grant-type: authorization_code
+            redirect-uri: "https://www.google.com/"
+            scope: openid,profile,email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9000/realms/my_realm
 
 server:
   port: 8080
+
