@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: company-service
+  datasource:
+    url: jdbc:postgresql://localhost:5435/company_service_db
+    username: postgres
+    password: o130805o
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: db/changelog/changelog-master.yml
+
+server:
+  port: 8083
