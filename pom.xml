@@ -32,6 +32,7 @@
 		<module>university-service</module>
 		<module>company-service</module>
 		<module>api-gateway</module>
+		<module>auth-service</module>
 	</modules>
 
 	<properties>
