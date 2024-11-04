@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponse login(AuthRequest authRequest) {
+    public AuthResponse login(AuthRequest authRequest) throws IncorrectCredentialsException {
         User user = authRepository.findByUsername(authRequest.getUsername())
                 .orElseThrow(() -> new IncorrectCredentialsException(ExceptionMessages.INCORRECT_CREDENTIALS));
 
@@ -49,6 +49,9 @@ public class AuthServiceImpl implements AuthService {
             throw new IncorrectCredentialsException(ExceptionMessages.INCORRECT_CREDENTIALS);
         };
 
-        return jwtTokenUtil.generateToken();
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setToken(jwtTokenUtil.generateToken(user.getId(), user.getRole()));
+
+        return authResponse;
     }
 }
