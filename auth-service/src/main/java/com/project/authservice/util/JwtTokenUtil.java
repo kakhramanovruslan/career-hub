@@ -30,8 +30,8 @@ public class JwtTokenUtil {
 
         return JWT.create()
                 .withSubject("user details")
-                .withClaim("id", id)
-                .withClaim("role", String.valueOf(role))
+                .withClaim("user-id", id)
+                .withClaim("user-role", String.valueOf(role))
                 .withIssuedAt(new Date())
                 .withIssuer(issuer)
                 .withExpiresAt(expirationDate)

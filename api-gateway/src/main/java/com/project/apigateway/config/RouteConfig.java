@@ -1,11 +1,10 @@
 package com.project.apigateway.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
-import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
+import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.function.*;
 
 @Configuration
 public class RouteConfig {
@@ -23,34 +22,16 @@ public class RouteConfig {
     private String authServiceUrl;
 
     @Bean
-    public RouterFunction<ServerResponse> studentServiceRoute() {
-        return GatewayRouterFunctions
-                .route("student-service")
-                .route(RequestPredicates.path("/student/**"), HandlerFunctions.http(studentServiceUrl))
-                .build();
-    }
-
-    @Bean
-    public RouterFunction<ServerResponse> universityServiceRoute() {
-        return GatewayRouterFunctions
-                .route("university-service")
-                .route(RequestPredicates.path("/university/**"), HandlerFunctions.http(universityServiceUrl))
-                .build();
-    }
-
-    @Bean
-    public RouterFunction<ServerResponse> companyServiceRoute() {
-        return GatewayRouterFunctions
-                .route("company-service")
-                .route(RequestPredicates.path("/company/**"), HandlerFunctions.http(companyServiceUrl))
-                .build();
-    }
-
-    @Bean
-    public RouterFunction<ServerResponse> authServiceRoute() {
-        return GatewayRouterFunctions
-                .route("auth-service")
-                .route(RequestPredicates.path("/auth/**"), HandlerFunctions.http(authServiceUrl))
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("student-service", r -> r.path("/student/**")
+                        .uri(studentServiceUrl))
+                .route("university-service", r -> r.path("/university/**")
+                        .uri(universityServiceUrl))
+                .route("company-service", r -> r.path("/company/**")
+                        .uri(companyServiceUrl))
+                .route("auth-service", r -> r.path("/auth/**")
+                        .uri(authServiceUrl))
                 .build();
     }
 }

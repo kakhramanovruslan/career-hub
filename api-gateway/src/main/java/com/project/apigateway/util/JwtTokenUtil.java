@@ -4,11 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class JwtTokenUtil {
@@ -27,9 +29,9 @@ public class JwtTokenUtil {
 
         DecodedJWT jwt = verifier.verify(token);
 
-        return List.of(
-                jwt.getClaim("id").asString(),
-                jwt.getClaim("role").asString()
-        );
+        String userId = jwt.getClaim("user-id").asLong().toString();
+        String userRole = jwt.getClaim("user-role").asString();
+
+        return List.of(userId, userRole);
     }
 }

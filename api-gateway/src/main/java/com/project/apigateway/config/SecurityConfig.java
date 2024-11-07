@@ -1,33 +1,34 @@
 package com.project.apigateway.config;
 
-import jakarta.servlet.Filter;
+import com.project.apigateway.filter.JwtAuthFilter;
+import com.project.apigateway.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.RequestMatchers;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
-@EnableWebSecurity
-@RequiredArgsConstructor
 @Configuration
+@RequiredArgsConstructor
+@EnableWebFluxSecurity
 public class SecurityConfig {
 
-    private final Filter jwtFilter;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        return http
-                .securityMatcher(RequestMatchers.allOf())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        http
                 .csrf(csrf -> csrf.disable())
-                .logout((logout) -> logout.logoutUrl("/logout"))
-                .build();
+                .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers(HttpMethod.POST, "/auth/registration").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .anyExchange().authenticated()
+                )
+                .addFilterBefore(new JwtAuthFilter(jwtTokenUtil), SecurityWebFiltersOrder.AUTHENTICATION);
+
+        return http.build();
     }
 }
