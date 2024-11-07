@@ -7,7 +7,12 @@ spring:
         student-server-url: http://localhost:8081
         university-server-url: http://localhost:8082
         company-server-url: http://localhost:8083
+        auth-server-url: http://localhost:8084
 
 server:
   port: 8080
+
+jwt:
+  secret: fdf203scdjkfkds9sdnfasb8ica12039r1mjkc1a
+  issuer: ruslan
 

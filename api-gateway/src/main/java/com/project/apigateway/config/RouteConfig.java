@@ -19,6 +19,9 @@ public class RouteConfig {
     @Value("${spring.cloud.gateway.routes.company-server-url}")
     private String companyServiceUrl;
 
+    @Value("${spring.cloud.gateway.routes.auth-server-url}")
+    private String authServiceUrl;
+
     @Bean
     public RouterFunction<ServerResponse> studentServiceRoute() {
         return GatewayRouterFunctions
@@ -40,6 +43,14 @@ public class RouteConfig {
         return GatewayRouterFunctions
                 .route("company-service")
                 .route(RequestPredicates.path("/company/**"), HandlerFunctions.http(companyServiceUrl))
+                .build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> authServiceRoute() {
+        return GatewayRouterFunctions
+                .route("auth-service")
+                .route(RequestPredicates.path("/auth/**"), HandlerFunctions.http(authServiceUrl))
                 .build();
     }
 }

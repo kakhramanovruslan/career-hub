@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 -- changeset olzhas:1
-CREATE TABLE company (
+CREATE TABLE IF NOT EXISTS company (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     type VARCHAR(50) CHECK ( type IN ('PRIVATE', 'STATE')) NOT NULL,
