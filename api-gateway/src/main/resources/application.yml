@@ -16,3 +16,9 @@ jwt:
   secret: fdf203scdjkfkds9sdnfasb8ica12039r1mjkc1a
   issuer: ruslan
 
+cors:
+    allowCredentials: false
+    allowedOrigins: http://localhost:3000
+    allowedMethods: GET, POST, PUT, DELETE, OPTIONS, HEAD
+    allowedHeaders: origin, content-type, accept, authorization, cookie, X-User-Id, X-User-Role
+
