@@ -9,14 +9,17 @@ import com.project.universityservice.exception.UniversityNotFoundException;
 import com.project.universityservice.mapper.UniversityDtoMapper;
 import com.project.universityservice.mapper.UniversityRequestMapper;
 import com.project.universityservice.model.University;
+import com.project.universityservice.model.enums.UniversityType;
 import com.project.universityservice.repository.UniversityRepository;
 import com.project.universityservice.service.UniversityService;
 import com.project.universityservice.util.ExceptionMessages;
+import com.project.universityservice.util.UniversitySpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.net.http.HttpRequest;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,6 +77,11 @@ public class UniversityServiceImpl implements UniversityService {
         findStudentOrThrow(id);
         studentClient.updateStudentById(id, studentRequest);
         log.info("Updating student with id {}", id);
+    }
+
+    @Override
+    public List<University> findByFilter(String name, UniversityType type, String location) {
+        return universityRepository.findAll(UniversitySpecification.withFilters(name, type, location));
     }
 
     private University findUniversityOrThrow(Long id) throws UniversityNotFoundException {

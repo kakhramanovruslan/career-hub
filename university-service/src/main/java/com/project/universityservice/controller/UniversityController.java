@@ -6,12 +6,16 @@ import com.project.universityservice.dto.UniversityRequest;
 import com.project.universityservice.dto.UniversityDto;
 import com.project.universityservice.exception.StudentNotFoundException;
 import com.project.universityservice.exception.UniversityNotFoundException;
+import com.project.universityservice.model.University;
+import com.project.universityservice.model.enums.UniversityType;
 import com.project.universityservice.service.UniversityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -20,6 +24,14 @@ import java.sql.SQLException;
 public class UniversityController {
 
     private final UniversityService universityService;
+
+    @GetMapping("/search")
+    public ResponseEntity<List<University>> getUniversities(@RequestParam(required = false) String name,
+                                                            @RequestParam(required = false) UniversityType type,
+                                                            @RequestParam(required = false) String location){
+
+        return ResponseEntity.ok().body(universityService.findByFilter(name, type, location));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UniversityDto> getUniversityById(@PathVariable Long id) throws UniversityNotFoundException {
