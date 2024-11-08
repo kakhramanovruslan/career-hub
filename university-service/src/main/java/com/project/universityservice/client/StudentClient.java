@@ -4,7 +4,7 @@ import com.project.universityservice.dto.StudentRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "student-service", url = "http://localhost:8080/student")
+@FeignClient(name = "student-service", url = "http://localhost:8081/student")
 public interface StudentClient {
     @PostMapping("")
     StudentRequest createStudent(@RequestBody StudentRequest studentDto);

@@ -3,10 +3,14 @@ package com.project.companyservice.controller;
 import com.project.companyservice.dto.CompanyDto;
 import com.project.companyservice.dto.CompanyRequest;
 import com.project.companyservice.exception.CompanyNotFoundException;
+import com.project.companyservice.model.Company;
+import com.project.companyservice.model.enums.CompanyType;
 import com.project.companyservice.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/company")
@@ -14,6 +18,14 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyController {
 
     private final CompanyService companyService;
+
+    @GetMapping("/search")
+    public ResponseEntity<List<CompanyDto>> getCompanies(@RequestParam(required = false) String name,
+                                                         @RequestParam(required = false) CompanyType type,
+                                                         @RequestParam(required = false) String location,
+                                                         @RequestParam(required = false) String industry){
+        return ResponseEntity.ok().body(companyService.findByFilter(name, type, location, industry));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDto> getCompanyById(@PathVariable Long id) throws CompanyNotFoundException {

@@ -3,12 +3,14 @@ package com.project.studentservice.controller;
 import com.project.studentservice.exception.StudentNotFoundException;
 import com.project.studentservice.model.dto.StudentDto;
 import com.project.studentservice.model.dto.StudentRequest;
+import com.project.studentservice.model.types.DegreeEnum;
 import com.project.studentservice.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/student")
@@ -16,6 +18,17 @@ import java.sql.SQLException;
 public class StudentController {
 
     private final StudentService studentService;
+
+    @GetMapping("/search")
+    public ResponseEntity<List<StudentDto>> getStudents(@RequestParam(required = false) String firstName,
+                                                       @RequestParam(required = false) String lastName,
+                                                       @RequestParam(required = false) DegreeEnum degree,
+                                                       @RequestParam(required = false) Integer currentYear,
+                                                       @RequestParam(required = false) Double minGpa,
+                                                       @RequestParam(required = false) Double maxGpa){
+
+        return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, minGpa, maxGpa));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<StudentDto> getStudentById(@PathVariable Long id) throws StudentNotFoundException, SQLException {
@@ -38,12 +51,4 @@ public class StudentController {
         studentService.updateStudentById(id, studentRequest);
         return ResponseEntity.ok().build();
     }
-
-//
-//    @GetMapping("/mock")
-//    public ResponseEntity<List<StudentDto>> getStudentsByFilter(){
-//        return ResponseEntity.ok().body(new ArrayList<StudentDto>());
-//    }
-//
-
 }

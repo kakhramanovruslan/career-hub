@@ -24,5 +24,5 @@ public interface UniversityService {
 
     void updateStudentById(Long id, StudentRequest studentRequest);
 
-    List<University> findByFilter(String name, UniversityType type, String location);
+    List<UniversityDto> findByFilter(String name, UniversityType type, String location);
 }

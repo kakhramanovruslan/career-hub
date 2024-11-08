@@ -6,13 +6,16 @@ import com.project.companyservice.exception.CompanyNotFoundException;
 import com.project.companyservice.mapper.CompanyDtoMapper;
 import com.project.companyservice.mapper.CompanyRequestMapper;
 import com.project.companyservice.model.Company;
+import com.project.companyservice.model.enums.CompanyType;
 import com.project.companyservice.repository.CompanyRepository;
 import com.project.companyservice.service.CompanyService;
+import com.project.companyservice.util.CompanySpecification;
 import com.project.companyservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,6 +53,14 @@ public class CompanyServiceImpl implements CompanyService {
         findCompanyOrThrow(id);
         companyRepository.deleteById(id);
         log.info("Company with id {} has been deleted", id);
+    }
+
+    @Override
+    public List<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry) {
+        List<Company> companies = companyRepository.findAll(CompanySpecification.withFilters(name, type, location, industry));
+        return companies.stream()
+                .map(companyDtoMapper::toDto)
+                .toList();
     }
 
     private Company findCompanyOrThrow(Long id) throws CompanyNotFoundException {

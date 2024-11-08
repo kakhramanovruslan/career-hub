@@ -2,6 +2,10 @@ package com.project.companyservice.service;
 
 import com.project.companyservice.dto.CompanyDto;
 import com.project.companyservice.dto.CompanyRequest;
+import com.project.companyservice.model.Company;
+import com.project.companyservice.model.enums.CompanyType;
+
+import java.util.List;
 
 public interface CompanyService {
     CompanyDto findCompanyById(Long id);
@@ -12,4 +16,5 @@ public interface CompanyService {
 
     void deleteCompanyById(Long id);
 
+    List<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry);
 }

@@ -80,8 +80,11 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<University> findByFilter(String name, UniversityType type, String location) {
-        return universityRepository.findAll(UniversitySpecification.withFilters(name, type, location));
+    public List<UniversityDto> findByFilter(String name, UniversityType type, String location) {
+        List<University> universities = universityRepository.findAll(UniversitySpecification.withFilters(name, type, location));
+        return universities.stream()
+                .map(universityDtoMapper::toDto)
+                .toList();
     }
 
     private University findUniversityOrThrow(Long id) throws UniversityNotFoundException {

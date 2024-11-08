@@ -26,7 +26,7 @@ public class UniversityController {
     private final UniversityService universityService;
 
     @GetMapping("/search")
-    public ResponseEntity<List<University>> getUniversities(@RequestParam(required = false) String name,
+    public ResponseEntity<List<UniversityDto>> getUniversities(@RequestParam(required = false) String name,
                                                             @RequestParam(required = false) UniversityType type,
                                                             @RequestParam(required = false) String location){
 

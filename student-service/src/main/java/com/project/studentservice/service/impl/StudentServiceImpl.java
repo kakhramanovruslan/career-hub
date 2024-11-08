@@ -1,5 +1,6 @@
 package com.project.studentservice.service.impl;
 
+import com.project.studentservice.model.types.DegreeEnum;
 import com.project.studentservice.util.ExceptionMessages;
 import com.project.studentservice.exception.StudentNotFoundException;
 import com.project.studentservice.mapper.StudentDtoMapper;
@@ -9,11 +10,13 @@ import com.project.studentservice.model.dto.StudentRequest;
 import com.project.studentservice.model.entity.Student;
 import com.project.studentservice.repository.StudentRepository;
 import com.project.studentservice.service.StudentService;
+import com.project.studentservice.util.StudentSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,6 +55,14 @@ public class StudentServiceImpl implements StudentService {
         Student student = findStudentOrThrow(id);
         studentRepository.save(studentRequestMapper.updateStudentFromRequest(studentRequest, student));
         log.info("Updating student with id {}", id);
+    }
+
+    @Override
+    public List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Double minGpa, Double maxGpa) {
+        List<Student> students = studentRepository.findAll(StudentSpecification.withFilters(firstName, lastName, degree, currentYear, minGpa, maxGpa));
+        return students.stream()
+                .map(studentDtoMapper::toDto)
+                .toList();
     }
 
 
