@@ -22,3 +22,7 @@ cors:
     allowedMethods: GET, POST, PUT, DELETE, OPTIONS, HEAD
     allowedHeaders: origin, content-type, accept, authorization, cookie, X-User-Id, X-User-Role
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

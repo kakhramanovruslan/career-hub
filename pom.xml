@@ -34,6 +34,7 @@
 		<module>api-gateway</module>
 		<module>auth-service</module>
 		<module>notification-service</module>
+		<module>discovery-service</module>
 	</modules>
 
 	<properties>
