@@ -35,6 +35,11 @@ public class StudentController {
         return ResponseEntity.ok().body(studentService.findStudentById(id));
     }
 
+    @GetMapping("/getByUniversityId/{id}")
+    public ResponseEntity<List<StudentDto>> getByUniversityId(@PathVariable Long id) throws StudentNotFoundException {
+        return ResponseEntity.ok().body(studentService.findStudentByUniversityId(id));
+    }
+
     @PostMapping
     public ResponseEntity<StudentDto> createStudent(@RequestBody StudentRequest studentRequest) throws SQLException {
         return ResponseEntity.status(201).body(studentService.addStudent(studentRequest));

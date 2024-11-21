@@ -1,6 +1,7 @@
 package com.project.universityservice.service.impl;
 
 import com.project.universityservice.client.StudentClient;
+import com.project.universityservice.dto.StudentDto;
 import com.project.universityservice.dto.StudentRequest;
 import com.project.universityservice.dto.UniversityRequest;
 import com.project.universityservice.dto.UniversityDto;
@@ -16,6 +17,7 @@ import com.project.universityservice.util.ExceptionMessages;
 import com.project.universityservice.util.UniversitySpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.net.http.HttpRequest;
@@ -63,6 +65,12 @@ public class UniversityServiceImpl implements UniversityService {
     @Override
     public StudentRequest createStudent(StudentRequest studentRequest) {
         return studentClient.createStudent(studentRequest);
+    }
+
+    @Override
+    @Cacheable(value = "feignCache", cacheManager = "cacheManager", key = "#id")
+    public List<StudentDto> findStudentByUniversityId(Long id) {
+        return studentClient.findStudentByUniversityId(id);
     }
 
     @Override

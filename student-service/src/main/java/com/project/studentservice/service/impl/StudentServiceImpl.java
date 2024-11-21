@@ -36,6 +36,15 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<StudentDto> findStudentByUniversityId(Long id) {
+        List<Student> students = studentRepository.findStudentByUniversityId(id);
+        log.info("Student with university id {} has been sent to the client", id);
+        return students.stream()
+                .map(studentDtoMapper::toDto)
+                .toList();
+    }
+
+    @Override
     public StudentDto addStudent(StudentRequest studentRequest) throws SQLException {
         Student student = studentRepository.save(studentRequestMapper.toEntity(studentRequest));
         StudentDto studentDto = studentDtoMapper.toDto(student);

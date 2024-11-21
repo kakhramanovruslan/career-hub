@@ -16,6 +16,8 @@ public interface StudentService {
 
     void deleteStudentById(Long id) throws SQLException;
 
+    List<StudentDto> findStudentByUniversityId(Long id);
+
     void updateStudentById(Long id, StudentRequest studentRequest) throws SQLException;
     List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Double minGpa, Double maxGpa);
 }

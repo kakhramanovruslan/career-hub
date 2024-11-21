@@ -1,6 +1,7 @@
 package com.project.universityservice.controller;
 
 import com.project.universityservice.client.StudentClient;
+import com.project.universityservice.dto.StudentDto;
 import com.project.universityservice.dto.StudentRequest;
 import com.project.universityservice.dto.UniversityRequest;
 import com.project.universityservice.dto.UniversityDto;
@@ -58,6 +59,11 @@ public class UniversityController {
     @PostMapping("/students/createStudent")
     public ResponseEntity<StudentRequest> createStudentForUniversity(@RequestBody StudentRequest studentDto) {
         return ResponseEntity.status(201).body(universityService.createStudent(studentDto));
+    }
+
+    @GetMapping("/students/getStudentByUniversityId/{id}")
+    public ResponseEntity<List<StudentDto>> getStudentByUniversityId(@PathVariable Long id){
+        return ResponseEntity.ok().body(universityService.findStudentByUniversityId(id));
     }
 
     @DeleteMapping("/students/{id}")
