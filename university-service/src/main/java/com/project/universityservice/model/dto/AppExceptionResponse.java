@@ -1,4 +1,4 @@
-package com.project.companyservice.dto;
+package com.project.universityservice.model.dto;
 
 import lombok.Builder;
 import lombok.Data;

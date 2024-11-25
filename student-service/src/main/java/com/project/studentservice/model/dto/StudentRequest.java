@@ -18,6 +18,8 @@ public class StudentRequest {
 
     private String email;
 
+    private Long ownerId;
+
     private Long universityId;
 
     private BigDecimal gpa;

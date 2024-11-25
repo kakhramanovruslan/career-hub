@@ -1,5 +1,6 @@
-package com.project.universityservice.dto;
+package com.project.universityservice.model.dto;
 
+import com.project.universityservice.model.enums.DegreeEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,8 @@ import java.time.LocalDateTime;
 public class StudentDto {
 
     private Long id;
+
+    private Long ownerId;
 
     private String firstName;
 

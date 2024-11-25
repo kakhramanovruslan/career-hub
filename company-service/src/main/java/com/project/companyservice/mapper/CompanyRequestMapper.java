@@ -1,7 +1,7 @@
 package com.project.companyservice.mapper;
 
-import com.project.companyservice.dto.CompanyRequest;
-import com.project.companyservice.model.Company;
+import com.project.companyservice.model.dto.CompanyRequest;
+import com.project.companyservice.model.entity.Company;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

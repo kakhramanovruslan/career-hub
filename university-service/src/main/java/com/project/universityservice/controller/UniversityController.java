@@ -1,21 +1,20 @@
 package com.project.universityservice.controller;
 
-import com.project.universityservice.client.StudentClient;
-import com.project.universityservice.dto.StudentDto;
-import com.project.universityservice.dto.StudentRequest;
-import com.project.universityservice.dto.UniversityRequest;
-import com.project.universityservice.dto.UniversityDto;
+import com.project.universityservice.exception.AccessDeniedException;
+import com.project.universityservice.model.dto.StudentDto;
+import com.project.universityservice.model.dto.StudentRequest;
+import com.project.universityservice.model.dto.UniversityRequest;
+import com.project.universityservice.model.dto.UniversityDto;
 import com.project.universityservice.exception.StudentNotFoundException;
 import com.project.universityservice.exception.UniversityNotFoundException;
-import com.project.universityservice.model.University;
 import com.project.universityservice.model.enums.UniversityType;
+import com.project.universityservice.model.enums.UserRole;
 import com.project.universityservice.service.UniversityService;
+import com.project.universityservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.List;
 
 
@@ -40,19 +39,32 @@ public class UniversityController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<UniversityDto> createUniversity(@RequestBody UniversityRequest universityRequest){
+    public ResponseEntity<UniversityDto> createUniversity(@RequestBody UniversityRequest universityRequest,
+                                                          @RequestHeader("X-User-Role") UserRole role,
+                                                          @RequestHeader("X-User-Id") Long userId){
+        hasRole(role, List.of(UserRole.UNIVERSITY));
+        universityRequest.setOwnerId(userId);
         return ResponseEntity.status(201).body(universityService.createUniversity(universityRequest));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateUniversityById(@PathVariable Long id, @RequestBody UniversityRequest universityRequest) throws UniversityNotFoundException {
-        universityService.updateUniversityById(id, universityRequest);
+    public ResponseEntity<Void> updateUniversityById(@PathVariable Long id,
+                                                     @RequestBody UniversityRequest universityRequest,
+                                                     @RequestHeader("X-User-Role") UserRole role,
+                                                     @RequestHeader("X-User-Id") Long userId)
+            throws UniversityNotFoundException {
+        hasRole(role, List.of(UserRole.UNIVERSITY));
+        universityService.updateUniversityById(id, universityRequest, userId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUniversityById(@PathVariable Long id) throws UniversityNotFoundException{
-        universityService.deleteUniversityById(id);
+    public ResponseEntity<Void> deleteUniversityById(@PathVariable Long id,
+                                                     @RequestHeader("X-User-Role") UserRole role,
+                                                     @RequestHeader("X-User-Id") Long userId)
+            throws UniversityNotFoundException{
+        hasRole(role, List.of(UserRole.UNIVERSITY));
+        universityService.deleteUniversityById(id, userId);
         return ResponseEntity.ok().build();
     }
 
@@ -76,5 +88,9 @@ public class UniversityController {
     public ResponseEntity<Void> updateStudentById(@PathVariable Long id, @RequestBody StudentRequest studentRequest) throws StudentNotFoundException {
         universityService.updateStudentById(id, studentRequest);
         return ResponseEntity.ok().build();
+    }
+
+    private void hasRole(UserRole currentRole, List<UserRole> requiredRoles) throws AccessDeniedException {
+        if (!requiredRoles.contains(currentRole)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }
 }

@@ -1,4 +1,4 @@
-package com.project.universityservice.dto;
+package com.project.universityservice.model.dto;
 
 import com.project.universityservice.model.enums.DegreeEnum;
 import jakarta.persistence.EnumType;
@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentRequest {
+
+    private Long ownerId;
 
     private String firstName;
 

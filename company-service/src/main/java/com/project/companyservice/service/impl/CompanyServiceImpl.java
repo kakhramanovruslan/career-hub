@@ -1,11 +1,12 @@
 package com.project.companyservice.service.impl;
 
-import com.project.companyservice.dto.CompanyDto;
-import com.project.companyservice.dto.CompanyRequest;
+import com.project.companyservice.exception.AccessDeniedException;
+import com.project.companyservice.model.dto.CompanyDto;
+import com.project.companyservice.model.dto.CompanyRequest;
 import com.project.companyservice.exception.CompanyNotFoundException;
 import com.project.companyservice.mapper.CompanyDtoMapper;
 import com.project.companyservice.mapper.CompanyRequestMapper;
-import com.project.companyservice.model.Company;
+import com.project.companyservice.model.entity.Company;
 import com.project.companyservice.model.enums.CompanyType;
 import com.project.companyservice.repository.CompanyRepository;
 import com.project.companyservice.service.CompanyService;
@@ -42,15 +43,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void updateCompanyById(Long id, CompanyRequest companyRequest) {
+    public void updateCompanyById(Long id, CompanyRequest companyRequest, Long userId) {
         Company company = findCompanyOrThrow(id);
+        isOwner(userId, company.getOwnerId());
         companyRepository.save(companyRequestMapper.updateCompanyFromRequest(companyRequest, company));
         log.info("Updating company with id {}", id);
     }
 
     @Override
-    public void deleteCompanyById(Long id) {
-        findCompanyOrThrow(id);
+    public void deleteCompanyById(Long id, Long userId) {
+        Company company = findCompanyOrThrow(id);
+        isOwner(userId, company.getOwnerId());
         companyRepository.deleteById(id);
         log.info("Company with id {} has been deleted", id);
     }
@@ -67,5 +70,9 @@ public class CompanyServiceImpl implements CompanyService {
         Optional<Company> company = companyRepository.findById(id);
         if(company.isEmpty()) throw new CompanyNotFoundException(ExceptionMessages.COMPANY_NOT_FOUND);
         return company.get();
+    }
+
+    private void isOwner(Long id, Long ownerId) throws AccessDeniedException {
+        if (!id.equals(ownerId)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }
 }

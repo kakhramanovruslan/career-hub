@@ -1,16 +1,22 @@
-package com.project.companyservice.dto;
+package com.project.companyservice.model.dto;
 
 import com.project.companyservice.model.enums.CompanyType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyRequest {
+public class CompanyDto {
+    private Long id;
+
+    private Long ownerId;
+
     private String name;
 
     @Enumerated(EnumType.STRING)

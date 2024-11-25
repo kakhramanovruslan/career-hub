@@ -1,5 +1,6 @@
 package com.project.authservice.controller.advice;
 
+import com.project.authservice.exception.AccessDeniedException;
 import com.project.authservice.exception.IncorrectCredentialsException;
 import com.project.authservice.exception.UserAlreadyExistException;
 import com.project.authservice.model.dto.AppExceptionResponse;
@@ -21,6 +22,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IncorrectCredentialsException.class)
     ResponseEntity<AppExceptionResponse> handleIncorrectCredentialsException(IncorrectCredentialsException exception) {
         return buildExceptionResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    ResponseEntity<AppExceptionResponse> handleAccessDeniedException(AccessDeniedException exception) {
+        return buildExceptionResponse(HttpStatus.FORBIDDEN, exception.getMessage());
     }
 
     // todo Make SQLException handler safer, we can't give messages from SQL to client

@@ -1,5 +1,6 @@
 package com.project.studentservice.service.impl;
 
+import com.project.studentservice.exception.AccessDeniedException;
 import com.project.studentservice.model.types.DegreeEnum;
 import com.project.studentservice.util.ExceptionMessages;
 import com.project.studentservice.exception.StudentNotFoundException;
@@ -53,15 +54,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudentById(Long id) throws StudentNotFoundException, SQLException {
-        findStudentOrThrow(id);
+    public void deleteStudentById(Long id, Long userId) throws StudentNotFoundException, AccessDeniedException, SQLException {
+        Student student = findStudentOrThrow(id);
+        isOwner(userId, student.getOwnerId());
         studentRepository.deleteById(id);
         log.info("Student with id {} has been deleted", id);
     }
 
     @Override
-    public void updateStudentById(Long id, StudentRequest studentRequest) throws StudentNotFoundException, SQLException {
+    public void updateStudentById(Long id, StudentRequest studentRequest, Long userId) throws StudentNotFoundException, AccessDeniedException, SQLException {
         Student student = findStudentOrThrow(id);
+        isOwner(userId, student.getOwnerId());
         studentRepository.save(studentRequestMapper.updateStudentFromRequest(studentRequest, student));
         log.info("Updating student with id {}", id);
     }
@@ -79,5 +82,9 @@ public class StudentServiceImpl implements StudentService {
         Optional<Student> student = studentRepository.findById(id);
         if(student.isEmpty()) throw new StudentNotFoundException(ExceptionMessages.STUDENT_NOT_FOUND);
         return student.get();
+    }
+
+    private void isOwner(Long id, Long ownerId) throws AccessDeniedException {
+        if (!id.equals(ownerId)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }
 }

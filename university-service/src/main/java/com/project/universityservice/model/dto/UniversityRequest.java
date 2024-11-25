@@ -1,4 +1,4 @@
-package com.project.universityservice.dto;
+package com.project.universityservice.model.dto;
 
 import com.project.universityservice.model.enums.UniversityType;
 import jakarta.persistence.EnumType;
@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UniversityRequest {
+
+    private Long ownerId;
+
     private String name;
 
     @Enumerated(EnumType.STRING)

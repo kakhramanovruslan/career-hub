@@ -1,13 +1,11 @@
 package com.project.universityservice.service;
 
-import com.project.universityservice.dto.StudentDto;
-import com.project.universityservice.dto.StudentRequest;
-import com.project.universityservice.dto.UniversityRequest;
-import com.project.universityservice.dto.UniversityDto;
-import com.project.universityservice.model.University;
+import com.project.universityservice.model.dto.StudentDto;
+import com.project.universityservice.model.dto.StudentRequest;
+import com.project.universityservice.model.dto.UniversityRequest;
+import com.project.universityservice.model.dto.UniversityDto;
 import com.project.universityservice.model.enums.UniversityType;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface UniversityService {
@@ -15,9 +13,9 @@ public interface UniversityService {
 
     UniversityDto createUniversity(UniversityRequest universityRequest);
 
-    void updateUniversityById(Long id, UniversityRequest universityRequest);
+    void updateUniversityById(Long id, UniversityRequest universityRequest, Long userId);
 
-    void deleteUniversityById(Long id);
+    void deleteUniversityById(Long id, Long userId);
 
     StudentRequest createStudent(StudentRequest studentRequest);
 

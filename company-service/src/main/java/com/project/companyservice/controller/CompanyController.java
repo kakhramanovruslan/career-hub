@@ -1,11 +1,13 @@
 package com.project.companyservice.controller;
 
-import com.project.companyservice.dto.CompanyDto;
-import com.project.companyservice.dto.CompanyRequest;
+import com.project.companyservice.exception.AccessDeniedException;
+import com.project.companyservice.model.dto.CompanyDto;
+import com.project.companyservice.model.dto.CompanyRequest;
 import com.project.companyservice.exception.CompanyNotFoundException;
-import com.project.companyservice.model.Company;
 import com.project.companyservice.model.enums.CompanyType;
+import com.project.companyservice.model.enums.UserRole;
 import com.project.companyservice.service.CompanyService;
+import com.project.companyservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,19 +35,36 @@ public class CompanyController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyRequest companyRequest){
+    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyRequest companyRequest,
+                                                    @RequestHeader("X-User-Role") UserRole role,
+                                                    @RequestHeader("X-User-Id") Long userId){
+        hasRole(role, List.of(UserRole.COMPANY));
+        companyRequest.setOwnerId(userId);
         return ResponseEntity.status(201).body(companyService.createCompany(companyRequest));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateCompanyById(@PathVariable Long id, @RequestBody CompanyRequest companyRequest) throws CompanyNotFoundException {
-        companyService.updateCompanyById(id, companyRequest);
+    public ResponseEntity<Void> updateCompanyById(@PathVariable Long id,
+                                                  @RequestBody CompanyRequest companyRequest,
+                                                  @RequestHeader("X-User-Role") UserRole role,
+                                                  @RequestHeader("X-User-Id") Long userId)
+            throws CompanyNotFoundException {
+        hasRole(role, List.of(UserRole.COMPANY));
+        companyService.updateCompanyById(id, companyRequest, userId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCompanyById(@PathVariable Long id) throws CompanyNotFoundException{
-        companyService.deleteCompanyById(id);
+    public ResponseEntity<Void> deleteCompanyById(@PathVariable Long id,
+                                                  @RequestHeader("X-User-Role") UserRole role,
+                                                  @RequestHeader("X-User-Id") Long userId)
+            throws CompanyNotFoundException{
+        hasRole(role, List.of(UserRole.COMPANY));
+        companyService.deleteCompanyById(id, userId);
         return ResponseEntity.ok().build();
+    }
+
+    private void hasRole(UserRole currentRole, List<UserRole> requiredRoles) throws AccessDeniedException {
+        if (!requiredRoles.contains(currentRole)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }
 }

@@ -1,7 +1,7 @@
 package com.project.universityservice.mapper;
 
-import com.project.universityservice.dto.UniversityDto;
-import com.project.universityservice.model.University;
+import com.project.universityservice.model.dto.UniversityDto;
+import com.project.universityservice.model.entity.University;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

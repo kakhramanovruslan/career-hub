@@ -1,15 +1,16 @@
 package com.project.universityservice.service.impl;
 
 import com.project.universityservice.client.StudentClient;
-import com.project.universityservice.dto.StudentDto;
-import com.project.universityservice.dto.StudentRequest;
-import com.project.universityservice.dto.UniversityRequest;
-import com.project.universityservice.dto.UniversityDto;
+import com.project.universityservice.exception.AccessDeniedException;
+import com.project.universityservice.model.dto.StudentDto;
+import com.project.universityservice.model.dto.StudentRequest;
+import com.project.universityservice.model.dto.UniversityRequest;
+import com.project.universityservice.model.dto.UniversityDto;
 import com.project.universityservice.exception.StudentNotFoundException;
 import com.project.universityservice.exception.UniversityNotFoundException;
 import com.project.universityservice.mapper.UniversityDtoMapper;
 import com.project.universityservice.mapper.UniversityRequestMapper;
-import com.project.universityservice.model.University;
+import com.project.universityservice.model.entity.University;
 import com.project.universityservice.model.enums.UniversityType;
 import com.project.universityservice.repository.UniversityRepository;
 import com.project.universityservice.service.UniversityService;
@@ -20,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,15 +49,17 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public void updateUniversityById(Long id, UniversityRequest universityRequest) {
+    public void updateUniversityById(Long id, UniversityRequest universityRequest, Long userId) {
         University university = findUniversityOrThrow(id);
+        isOwner(userId, university.getOwnerId());
         universityRepository.save(universityRequestMapper.updateUniversityFromRequest(universityRequest, university));
         log.info("Updating university with id {}", id);
     }
 
     @Override
-    public void deleteUniversityById(Long id) {
-        findUniversityOrThrow(id);
+    public void deleteUniversityById(Long id, Long userId) {
+        University university = findUniversityOrThrow(id);
+        isOwner(userId, university.getOwnerId());
         universityRepository.deleteById(id);
         log.info("University with id {} has been deleted", id);
     }
@@ -105,5 +107,9 @@ public class UniversityServiceImpl implements UniversityService {
         Optional<StudentRequest> student = Optional.ofNullable(studentClient.findStudentById(id));
         if(student.isEmpty()) throw new StudentNotFoundException(ExceptionMessages.STUDENT_NOT_FOUND);
         return student.get();
+    }
+
+    private void isOwner(Long id, Long ownerId) throws AccessDeniedException {
+        if (!id.equals(ownerId)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }
 }

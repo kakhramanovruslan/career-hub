@@ -1,7 +1,7 @@
 package com.project.universityservice.client;
 
-import com.project.universityservice.dto.StudentDto;
-import com.project.universityservice.dto.StudentRequest;
+import com.project.universityservice.model.dto.StudentDto;
+import com.project.universityservice.model.dto.StudentRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

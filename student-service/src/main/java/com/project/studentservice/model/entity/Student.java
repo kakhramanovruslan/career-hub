@@ -32,6 +32,8 @@ public class Student {
 
     private Long universityId;
 
+    private Long ownerId;
+
     private BigDecimal gpa;
 
     private String phoneNumber;

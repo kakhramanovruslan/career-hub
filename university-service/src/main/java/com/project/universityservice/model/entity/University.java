@@ -1,6 +1,6 @@
-package com.project.companyservice.model;
+package com.project.universityservice.model.entity;
 
-import com.project.companyservice.model.enums.CompanyType;
+import com.project.universityservice.model.enums.UniversityType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,32 +11,34 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "university")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "company")
-public class Company {
+public class University {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long ownerId;
+
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private CompanyType type;
+    private UniversityType type;
 
-    private String location;
+    private String email;
 
     private String contactPhone;
 
-    private String industry;
-
-    private String website;
+    private String location;
 
     private Integer establishedYear;
+
+    private String website;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

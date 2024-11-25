@@ -1,32 +1,30 @@
-package com.project.universityservice.dto;
+package com.project.companyservice.model.dto;
 
-import com.project.universityservice.model.enums.UniversityType;
+import com.project.companyservice.model.enums.CompanyType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UniversityDto {
-    private Long id;
-
+public class CompanyRequest {
     private String name;
 
+    private Long ownerId;
+
     @Enumerated(EnumType.STRING)
-    private UniversityType type;
-
-    private String email;
-
-    private String contactPhone;
+    private CompanyType type;
 
     private String location;
 
-    private Integer establishedYear;
+    private String contactPhone;
+
+    private String industry;
 
     private String website;
+
+    private Integer establishedYear;
 }

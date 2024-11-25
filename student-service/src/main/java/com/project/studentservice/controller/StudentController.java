@@ -1,10 +1,13 @@
 package com.project.studentservice.controller;
 
+import com.project.studentservice.exception.AccessDeniedException;
 import com.project.studentservice.exception.StudentNotFoundException;
 import com.project.studentservice.model.dto.StudentDto;
 import com.project.studentservice.model.dto.StudentRequest;
 import com.project.studentservice.model.types.DegreeEnum;
+import com.project.studentservice.model.types.UserRole;
 import com.project.studentservice.service.StudentService;
+import com.project.studentservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,19 +44,37 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDto> createStudent(@RequestBody StudentRequest studentRequest) throws SQLException {
+    public ResponseEntity<StudentDto> createStudent(@RequestBody StudentRequest studentRequest,
+                                                    @RequestHeader("X-User-Role") UserRole role,
+                                                    @RequestHeader("X-User-Id") Long userId)
+            throws SQLException {
+        hasRole(role, List.of(UserRole.UNIVERSITY));
+        studentRequest.setOwnerId(userId);
         return ResponseEntity.status(201).body(studentService.addStudent(studentRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudentById(@PathVariable  Long id) throws StudentNotFoundException, SQLException {
-        studentService.deleteStudentById(id);
+    public ResponseEntity<Void> deleteStudentById(@PathVariable  Long id,
+                                                  @RequestHeader("X-User-Role") UserRole role,
+                                                  @RequestHeader("X-User-Id") Long userId)
+            throws StudentNotFoundException, SQLException {
+        hasRole(role, List.of(UserRole.UNIVERSITY));
+        studentService.deleteStudentById(id, userId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateStudentById(@PathVariable Long id, @RequestBody StudentRequest studentRequest) throws StudentNotFoundException, SQLException {
-        studentService.updateStudentById(id, studentRequest);
+    public ResponseEntity<Void> updateStudentById(@PathVariable Long id,
+                                                  @RequestBody StudentRequest studentRequest,
+                                                  @RequestHeader("X-User-Role") UserRole role,
+                                                  @RequestHeader("X-User-Id") Long userId)
+            throws StudentNotFoundException, SQLException {
+        hasRole(role, List.of(UserRole.STUDENT));
+        studentService.updateStudentById(id, studentRequest, userId);
         return ResponseEntity.ok().build();
+    }
+
+    private void hasRole(UserRole currentRole, List<UserRole> requiredRoles) throws AccessDeniedException {
+        if (!requiredRoles.contains(currentRole)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }
 }

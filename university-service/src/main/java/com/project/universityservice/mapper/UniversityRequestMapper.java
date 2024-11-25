@@ -1,7 +1,7 @@
 package com.project.universityservice.mapper;
 
-import com.project.universityservice.dto.UniversityRequest;
-import com.project.universityservice.model.University;
+import com.project.universityservice.model.dto.UniversityRequest;
+import com.project.universityservice.model.entity.University;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

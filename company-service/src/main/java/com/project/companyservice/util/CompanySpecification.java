@@ -1,6 +1,6 @@
 package com.project.companyservice.util;
 
-import com.project.companyservice.model.Company;
+import com.project.companyservice.model.entity.Company;
 import com.project.companyservice.model.enums.CompanyType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

@@ -14,10 +14,10 @@ public interface StudentService {
 
     StudentDto addStudent(StudentRequest studentRequest) throws SQLException;
 
-    void deleteStudentById(Long id) throws SQLException;
+    void deleteStudentById(Long id, Long userId) throws SQLException;
 
     List<StudentDto> findStudentByUniversityId(Long id);
 
-    void updateStudentById(Long id, StudentRequest studentRequest) throws SQLException;
+    void updateStudentById(Long id, StudentRequest studentRequest, Long userId) throws SQLException;
     List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Double minGpa, Double maxGpa);
 }

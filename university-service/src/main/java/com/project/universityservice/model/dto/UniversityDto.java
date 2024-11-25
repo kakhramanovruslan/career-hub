@@ -1,27 +1,21 @@
-package com.project.universityservice.model;
+package com.project.universityservice.model.dto;
 
 import com.project.universityservice.model.enums.UniversityType;
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "university")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class University {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UniversityDto {
     private Long id;
+
+    private Long ownerId;
 
     private String name;
 
@@ -37,10 +31,4 @@ public class University {
     private Integer establishedYear;
 
     private String website;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }

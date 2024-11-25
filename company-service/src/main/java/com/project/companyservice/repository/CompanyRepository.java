@@ -1,6 +1,6 @@
 package com.project.companyservice.repository;
 
-import com.project.companyservice.model.Company;
+import com.project.companyservice.model.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

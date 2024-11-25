@@ -1,5 +1,6 @@
 package com.project.studentservice.controller.advice;
 
+import com.project.studentservice.exception.AccessDeniedException;
 import com.project.studentservice.exception.StudentNotFoundException;
 import com.project.studentservice.model.dto.AppExceptionResponse;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SQLException.class)
     ResponseEntity<AppExceptionResponse> handleSqlException(SQLException exception) {
         return buildExceptionResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    ResponseEntity<AppExceptionResponse> handleAccessDeniedException(AccessDeniedException exception) {
+        return buildExceptionResponse(HttpStatus.FORBIDDEN, exception.getMessage());
     }
 
     private ResponseEntity<AppExceptionResponse> buildExceptionResponse(HttpStatus status, String message) {

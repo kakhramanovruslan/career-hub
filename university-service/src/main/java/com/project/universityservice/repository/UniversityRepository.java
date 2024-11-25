@@ -1,6 +1,6 @@
 package com.project.universityservice.repository;
 
-import com.project.universityservice.model.University;
+import com.project.universityservice.model.entity.University;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

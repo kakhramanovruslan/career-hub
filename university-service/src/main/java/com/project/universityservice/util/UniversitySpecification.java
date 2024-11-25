@@ -1,6 +1,6 @@
 package com.project.universityservice.util;
 
-import com.project.universityservice.model.University;
+import com.project.universityservice.model.entity.University;
 import com.project.universityservice.model.enums.UniversityType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
