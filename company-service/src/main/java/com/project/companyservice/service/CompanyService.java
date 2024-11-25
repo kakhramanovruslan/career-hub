@@ -4,6 +4,7 @@ import com.project.companyservice.dto.CompanyDto;
 import com.project.companyservice.dto.CompanyRequest;
 import com.project.companyservice.model.Company;
 import com.project.companyservice.model.enums.CompanyType;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface CompanyService {
 
     void deleteCompanyById(Long id);
 
-    List<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry);
+    List<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry, Pageable pageable);
 }

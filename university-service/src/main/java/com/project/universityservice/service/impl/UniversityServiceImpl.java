@@ -18,6 +18,8 @@ import com.project.universityservice.util.UniversitySpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.net.http.HttpRequest;
@@ -69,8 +71,8 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     @Cacheable(value = "feignCache", cacheManager = "cacheManager", key = "#id")
-    public List<StudentDto> findStudentByUniversityId(Long id) {
-        return studentClient.findStudentByUniversityId(id);
+    public List<StudentDto> findStudentByUniversityId(Long id, int page, int size) {
+        return studentClient.findStudentByUniversityId(id, page, size);
     }
 
     @Override
@@ -88,8 +90,8 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<UniversityDto> findByFilter(String name, UniversityType type, String location) {
-        List<University> universities = universityRepository.findAll(UniversitySpecification.withFilters(name, type, location));
+    public List<UniversityDto> findByFilter(String name, UniversityType type, String location, Pageable pageable) {
+        Page<University> universities = universityRepository.findAll(UniversitySpecification.withFilters(name, type, location), pageable);
         return universities.stream()
                 .map(universityDtoMapper::toDto)
                 .toList();

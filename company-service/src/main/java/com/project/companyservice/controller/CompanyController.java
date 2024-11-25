@@ -7,6 +7,8 @@ import com.project.companyservice.model.Company;
 import com.project.companyservice.model.enums.CompanyType;
 import com.project.companyservice.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,11 @@ public class CompanyController {
     public ResponseEntity<List<CompanyDto>> getCompanies(@RequestParam(required = false) String name,
                                                          @RequestParam(required = false) CompanyType type,
                                                          @RequestParam(required = false) String location,
-                                                         @RequestParam(required = false) String industry){
-        return ResponseEntity.ok().body(companyService.findByFilter(name, type, location, industry));
+                                                         @RequestParam(required = false) String industry,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok().body(companyService.findByFilter(name, type, location, industry, pageable));
     }
 
     @GetMapping("/{id}")

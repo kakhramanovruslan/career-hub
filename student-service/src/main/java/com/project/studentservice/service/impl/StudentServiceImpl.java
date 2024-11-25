@@ -13,6 +13,8 @@ import com.project.studentservice.service.StudentService;
 import com.project.studentservice.util.StudentSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -36,8 +38,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> findStudentByUniversityId(Long id) {
-        List<Student> students = studentRepository.findStudentByUniversityId(id);
+    public List<StudentDto> findStudentByUniversityId(Long id, Pageable pageable) {
+        List<Student> students = studentRepository.findStudentByUniversityId(id, pageable);
         log.info("Student with university id {} has been sent to the client", id);
         return students.stream()
                 .map(studentDtoMapper::toDto)
@@ -67,8 +69,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Double minGpa, Double maxGpa) {
-        List<Student> students = studentRepository.findAll(StudentSpecification.withFilters(firstName, lastName, degree, currentYear, minGpa, maxGpa));
+    public List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable) {
+        Page<Student> students = studentRepository.findAll(StudentSpecification.withFilters(firstName, lastName, degree, currentYear, minGpa, maxGpa), pageable);
         return students.stream()
                 .map(studentDtoMapper::toDto)
                 .toList();

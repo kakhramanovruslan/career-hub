@@ -11,6 +11,8 @@ import com.project.universityservice.model.University;
 import com.project.universityservice.model.enums.UniversityType;
 import com.project.universityservice.service.UniversityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +30,13 @@ public class UniversityController {
 
     @GetMapping("/search")
     public ResponseEntity<List<UniversityDto>> getUniversities(@RequestParam(required = false) String name,
-                                                            @RequestParam(required = false) UniversityType type,
-                                                            @RequestParam(required = false) String location){
+                                                               @RequestParam(required = false) UniversityType type,
+                                                               @RequestParam(required = false) String location,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "10") int size){
 
-        return ResponseEntity.ok().body(universityService.findByFilter(name, type, location));
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok().body(universityService.findByFilter(name, type, location, pageable));
     }
 
     @GetMapping("/{id}")
@@ -62,8 +67,10 @@ public class UniversityController {
     }
 
     @GetMapping("/students/getStudentByUniversityId/{id}")
-    public ResponseEntity<List<StudentDto>> getStudentByUniversityId(@PathVariable Long id){
-        return ResponseEntity.ok().body(universityService.findStudentByUniversityId(id));
+    public ResponseEntity<List<StudentDto>> getStudentByUniversityId(@PathVariable Long id,
+                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size){
+        return ResponseEntity.ok().body(universityService.findStudentByUniversityId(id, page, size));
     }
 
     @DeleteMapping("/students/{id}")

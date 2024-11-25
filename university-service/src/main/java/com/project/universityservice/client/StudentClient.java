@@ -19,7 +19,9 @@ public interface StudentClient {
     StudentRequest findStudentById(@PathVariable Long id);
 
     @GetMapping("/getByUniversityId/{id}")
-    List<StudentDto> findStudentByUniversityId(@PathVariable Long id);
+    List<StudentDto> findStudentByUniversityId(@PathVariable Long id,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size);
 
     @PutMapping("/{id}")
     void updateStudentById(@PathVariable Long id, @RequestBody StudentRequest studentRequest);

@@ -13,6 +13,8 @@ import com.project.companyservice.util.CompanySpecification;
 import com.project.companyservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,8 +58,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry) {
-        List<Company> companies = companyRepository.findAll(CompanySpecification.withFilters(name, type, location, industry));
+    public List<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry, Pageable pageable) {
+        Page<Company> companies = companyRepository.findAll(CompanySpecification.withFilters(name, type, location, industry), pageable);
         return companies.stream()
                 .map(companyDtoMapper::toDto)
                 .toList();
