@@ -9,6 +9,8 @@ import com.project.studentservice.model.types.UserRole;
 import com.project.studentservice.service.StudentService;
 import com.project.studentservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +30,12 @@ public class StudentController {
                                                        @RequestParam(required = false) DegreeEnum degree,
                                                        @RequestParam(required = false) Integer currentYear,
                                                        @RequestParam(required = false) Double minGpa,
-                                                       @RequestParam(required = false) Double maxGpa){
+                                                       @RequestParam(required = false) Double maxGpa,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size){
 
-        return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, minGpa, maxGpa));
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, minGpa, maxGpa, pageable));
     }
 
     @GetMapping("/{id}")
@@ -39,8 +44,11 @@ public class StudentController {
     }
 
     @GetMapping("/getByUniversityId/{id}")
-    public ResponseEntity<List<StudentDto>> getByUniversityId(@PathVariable Long id) throws StudentNotFoundException {
-        return ResponseEntity.ok().body(studentService.findStudentByUniversityId(id));
+    public ResponseEntity<List<StudentDto>> getByUniversityId(@PathVariable Long id,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size) throws StudentNotFoundException {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok().body(studentService.findStudentByUniversityId(id, pageable));
     }
 
     @PostMapping
