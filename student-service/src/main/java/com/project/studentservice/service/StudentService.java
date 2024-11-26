@@ -19,11 +19,7 @@ public interface StudentService {
 
     List<StudentDto> findStudentByUniversityId(Long id, Pageable pageable);
 
-<<<<<<< HEAD
     void updateStudentById(Long id, StudentRequest studentRequest, Long userId) throws SQLException;
-    List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Double minGpa, Double maxGpa);
-=======
-    void updateStudentById(Long id, StudentRequest studentRequest) throws SQLException;
+
     List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable);
->>>>>>> c04cca77a56cb248d993aeb8269e51834f881132
 }

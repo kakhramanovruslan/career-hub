@@ -18,12 +18,12 @@ public interface UniversityService {
 
     void deleteUniversityById(Long id, Long userId);
 
-    StudentRequest createStudent(StudentRequest studentRequest);
+    StudentRequest createStudent(StudentRequest studentRequest, String token);
 
-    void deleteStudentById(Long id);
+    void deleteStudentById(Long id, String token);
 
-    void updateStudentById(Long id, StudentRequest studentRequest);
+    void updateStudentById(Long id, StudentRequest studentRequest, String token);
 
     List<UniversityDto> findByFilter(String name, UniversityType type, String location, Pageable pageable);
-    List<StudentDto> findStudentByUniversityId(Long id, int page, int size);
+    List<StudentDto> findStudentByUniversityId(Long id, int page, int size, String token);
 }

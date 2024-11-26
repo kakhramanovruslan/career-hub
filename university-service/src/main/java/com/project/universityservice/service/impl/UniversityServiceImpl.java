@@ -67,27 +67,27 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public StudentRequest createStudent(StudentRequest studentRequest) {
-        return studentClient.createStudent(studentRequest);
+    public StudentRequest createStudent(StudentRequest studentRequest, String token) {
+        return studentClient.createStudent(studentRequest, token);
     }
 
     @Override
     @Cacheable(value = "feignCache", cacheManager = "cacheManager", key = "#id")
-    public List<StudentDto> findStudentByUniversityId(Long id, int page, int size) {
-        return studentClient.findStudentByUniversityId(id, page, size);
+    public List<StudentDto> findStudentByUniversityId(Long id, int page, int size, String token) {
+        return studentClient.findStudentByUniversityId(id, page, size, token);
     }
 
     @Override
-    public void deleteStudentById(Long id) {
-        findStudentOrThrow(id);
-        studentClient.deleteStudentById(id);
+    public void deleteStudentById(Long id, String token) {
+        findStudentOrThrow(id, token);
+        studentClient.deleteStudentById(id, token);
         log.info("Student with id {} has been deleted [from University-Service]", id);
     }
 
     @Override
-    public void updateStudentById(Long id, StudentRequest studentRequest) {
-        findStudentOrThrow(id);
-        studentClient.updateStudentById(id, studentRequest);
+    public void updateStudentById(Long id, StudentRequest studentRequest, String token) {
+        findStudentOrThrow(id, token);
+        studentClient.updateStudentById(id, studentRequest, token);
         log.info("Updating student with id {}", id);
     }
 
@@ -105,8 +105,8 @@ public class UniversityServiceImpl implements UniversityService {
         return university.get();
     }
 
-    private StudentRequest findStudentOrThrow(Long id) throws StudentNotFoundException {
-        Optional<StudentRequest> student = Optional.ofNullable(studentClient.findStudentById(id));
+    private StudentRequest findStudentOrThrow(Long id, String token) throws StudentNotFoundException {
+        Optional<StudentRequest> student = Optional.ofNullable(studentClient.findStudentById(id, token));
         if(student.isEmpty()) throw new StudentNotFoundException(ExceptionMessages.STUDENT_NOT_FOUND);
         return student.get();
     }

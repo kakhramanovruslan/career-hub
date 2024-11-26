@@ -32,7 +32,7 @@ public class SecurityFilter implements WebFilter {
         try{
             if (token == null){
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                return chain.filter(exchange);
+                return exchange.getResponse().setComplete();
             }
             else {
                 List<String> claims = jwtTokenUtil.validateTokenAndRetrieveClaims(token);

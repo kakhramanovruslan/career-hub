@@ -7,10 +7,6 @@ import com.project.universityservice.model.dto.UniversityRequest;
 import com.project.universityservice.model.dto.UniversityDto;
 import com.project.universityservice.exception.StudentNotFoundException;
 import com.project.universityservice.exception.UniversityNotFoundException;
-import com.project.universityservice.model.dto.StudentDto;
-import com.project.universityservice.model.dto.StudentRequest;
-import com.project.universityservice.model.dto.UniversityDto;
-import com.project.universityservice.model.dto.UniversityRequest;
 import com.project.universityservice.model.enums.UniversityType;
 import com.project.universityservice.model.enums.UserRole;
 import com.project.universityservice.service.UniversityService;
@@ -18,11 +14,10 @@ import com.project.universityservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 
-import java.sql.SQLException;
 import java.util.List;
 
 
@@ -80,30 +75,33 @@ public class UniversityController {
     }
 
     @PostMapping("/students/createStudent")
-    public ResponseEntity<StudentRequest> createStudentForUniversity(@RequestBody StudentRequest studentDto) {
-        return ResponseEntity.status(201).body(universityService.createStudent(studentDto));
+    public ResponseEntity<StudentRequest> createStudentForUniversity(@RequestBody StudentRequest studentDto,
+                                                                     @RequestHeader("Authorization") String token) {
+        return ResponseEntity.status(201).body(universityService.createStudent(studentDto, token));
     }
 
     @GetMapping("/students/getStudentByUniversityId/{id}")
     public ResponseEntity<List<StudentDto>> getStudentByUniversityId(@PathVariable Long id,
                                                                      @RequestParam(defaultValue = "0") int page,
-                                                                     @RequestParam(defaultValue = "10") int size){
-        return ResponseEntity.ok().body(universityService.findStudentByUniversityId(id, page, size));
+                                                                     @RequestParam(defaultValue = "10") int size,
+                                                                     @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok().body(universityService.findStudentByUniversityId(id, page, size, token));
     }
 
     @DeleteMapping("/students/{id}")
-    public ResponseEntity<Void> deleteStudentById(@PathVariable  Long id) throws StudentNotFoundException {
-        universityService.deleteStudentById(id);
+    public ResponseEntity<Void> deleteStudentById(@PathVariable  Long id, @RequestHeader("Authorization") String token) throws StudentNotFoundException {
+        universityService.deleteStudentById(id, token);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/students/{id}")
-    public ResponseEntity<Void> updateStudentById(@PathVariable Long id, @RequestBody StudentRequest studentRequest) throws StudentNotFoundException {
-        universityService.updateStudentById(id, studentRequest);
+    public ResponseEntity<Void> updateStudentById(@PathVariable Long id, @RequestBody StudentRequest studentRequest, @RequestHeader("Authorization") String token) throws StudentNotFoundException {
+        universityService.updateStudentById(id, studentRequest, token);
         return ResponseEntity.ok().build();
     }
 
     private void hasRole(UserRole currentRole, List<UserRole> requiredRoles) throws AccessDeniedException {
         if (!requiredRoles.contains(currentRole)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }
+
 }
