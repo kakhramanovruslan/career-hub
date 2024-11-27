@@ -11,16 +11,3 @@ CREATE TABLE IF NOT EXISTS university (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
---
--- CREATE OR REPLACE FUNCTION update_timestamp()
---     RETURNS TRIGGER AS $$
--- BEGIN
---     NEW.updated_at = CURRENT_TIMESTAMP;
---     RETURN NEW;
--- END;
--- $$ LANGUAGE plpgsql;
---
--- CREATE TRIGGER trigger_update_timestamp
---     BEFORE UPDATE ON university
---     FOR EACH ROW
--- EXECUTE FUNCTION update_timestamp();

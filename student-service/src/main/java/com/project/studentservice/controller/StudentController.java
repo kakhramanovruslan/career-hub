@@ -52,27 +52,27 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDto> createStudent(@RequestBody StudentRequest studentRequest,
+    public ResponseEntity<StudentDto> createStudentProfile(@RequestBody StudentRequest studentRequest,
                                                     @RequestHeader("X-User-Role") UserRole role,
                                                     @RequestHeader("X-User-Id") Long userId)
             throws SQLException {
-        hasRole(role, List.of(UserRole.UNIVERSITY));
+        hasRole(role, List.of(UserRole.STUDENT));
         studentRequest.setOwnerId(userId);
         return ResponseEntity.status(201).body(studentService.addStudent(studentRequest));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudentById(@PathVariable  Long id,
-                                                  @RequestHeader("X-User-Role") UserRole role,
-                                                  @RequestHeader("X-User-Id") Long userId)
-            throws StudentNotFoundException, SQLException {
-        hasRole(role, List.of(UserRole.UNIVERSITY));
-        studentService.deleteStudentById(id, userId);
-        return ResponseEntity.ok().build();
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteStudentById(@PathVariable  Long id,
+//                                                  @RequestHeader("X-User-Role") UserRole role,
+//                                                  @RequestHeader("X-User-Id") Long userId)
+//            throws StudentNotFoundException, SQLException {
+//        hasRole(role, List.of(UserRole.UNIVERSITY));
+//        studentService.deleteStudentById(id, userId);
+//        return ResponseEntity.ok().build();
+//    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateStudentById(@PathVariable Long id,
+    public ResponseEntity<Void> updateStudentProfileById(@PathVariable Long id,
                                                   @RequestBody StudentRequest studentRequest,
                                                   @RequestHeader("X-User-Role") UserRole role,
                                                   @RequestHeader("X-User-Id") Long userId)

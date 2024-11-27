@@ -2,16 +2,14 @@ package com.project.universityservice.service.impl;
 
 import com.project.universityservice.client.StudentClient;
 import com.project.universityservice.exception.AccessDeniedException;
-import com.project.universityservice.model.dto.StudentDto;
-import com.project.universityservice.model.dto.StudentRequest;
-import com.project.universityservice.model.dto.UniversityRequest;
-import com.project.universityservice.model.dto.UniversityDto;
+import com.project.universityservice.model.dto.*;
 import com.project.universityservice.exception.StudentNotFoundException;
 import com.project.universityservice.exception.UniversityNotFoundException;
 import com.project.universityservice.mapper.UniversityDtoMapper;
 import com.project.universityservice.mapper.UniversityRequestMapper;
 import com.project.universityservice.model.entity.University;
 import com.project.universityservice.model.enums.UniversityType;
+import com.project.universityservice.producer.EmailProducer;
 import com.project.universityservice.repository.UniversityRepository;
 import com.project.universityservice.service.UniversityService;
 import com.project.universityservice.util.ExceptionMessages;
@@ -35,6 +33,7 @@ public class UniversityServiceImpl implements UniversityService {
     private final UniversityDtoMapper universityDtoMapper;
     private final UniversityRequestMapper universityRequestMapper;
     private final StudentClient studentClient;
+    private final EmailProducer emailProducer;
 
     @Override
     public UniversityDto findUniversityById(Long id) {
@@ -67,7 +66,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public StudentRequest createStudent(StudentRequest studentRequest, String token) {
+    public StudentRequest createStudentProfile(StudentRequest studentRequest, String token) {
         return studentClient.createStudent(studentRequest, token);
     }
 
