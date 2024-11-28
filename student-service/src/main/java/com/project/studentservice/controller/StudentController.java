@@ -9,6 +9,7 @@ import com.project.studentservice.model.types.UserRole;
 import com.project.studentservice.service.StudentService;
 import com.project.studentservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +26,14 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/search")
-    public ResponseEntity<List<StudentDto>> getStudents(@RequestParam(required = false) String firstName,
-                                                       @RequestParam(required = false) String lastName,
-                                                       @RequestParam(required = false) DegreeEnum degree,
-                                                       @RequestParam(required = false) Integer currentYear,
-                                                       @RequestParam(required = false) Double minGpa,
-                                                       @RequestParam(required = false) Double maxGpa,
-                                                       @RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<Page<StudentDto>> getStudents(@RequestParam(required = false) String firstName,
+                                                        @RequestParam(required = false) String lastName,
+                                                        @RequestParam(required = false) DegreeEnum degree,
+                                                        @RequestParam(required = false) Integer currentYear,
+                                                        @RequestParam(required = false) Double minGpa,
+                                                        @RequestParam(required = false) Double maxGpa,
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size){
 
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, minGpa, maxGpa, pageable));

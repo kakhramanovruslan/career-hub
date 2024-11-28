@@ -4,6 +4,7 @@ package com.project.studentservice.service;
 import com.project.studentservice.model.dto.StudentDto;
 import com.project.studentservice.model.dto.StudentRequest;
 import com.project.studentservice.model.types.DegreeEnum;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.sql.SQLException;
@@ -21,5 +22,5 @@ public interface StudentService {
 
     void updateStudentById(Long id, StudentRequest studentRequest, Long userId) throws SQLException;
 
-    List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable);
+    Page<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable);
 }

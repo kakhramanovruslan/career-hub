@@ -64,11 +64,9 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry, Pageable pageable) {
+    public Page<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry, Pageable pageable) {
         Page<Company> companies = companyRepository.findAll(CompanySpecification.withFilters(name, type, location, industry), pageable);
-        return companies.stream()
-                .map(companyDtoMapper::toDto)
-                .toList();
+        return companies.map(companyDtoMapper::toDto);
     }
 
     private Company findCompanyOrThrow(Long id) throws CompanyNotFoundException {

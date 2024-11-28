@@ -75,11 +75,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable) {
+    public Page<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable) {
         Page<Student> students = studentRepository.findAll(StudentSpecification.withFilters(firstName, lastName, degree, currentYear, minGpa, maxGpa), pageable);
-        return students.stream()
-                .map(studentDtoMapper::toDto)
-                .toList();
+        return students.map(studentDtoMapper::toDto);
     }
 
 

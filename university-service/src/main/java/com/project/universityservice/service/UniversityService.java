@@ -5,6 +5,7 @@ import com.project.universityservice.model.dto.StudentRequest;
 import com.project.universityservice.model.dto.UniversityRequest;
 import com.project.universityservice.model.dto.UniversityDto;
 import com.project.universityservice.model.enums.UniversityType;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -24,6 +25,6 @@ public interface UniversityService {
 
     void updateStudentById(Long id, StudentRequest studentRequest, String token);
 
-    List<UniversityDto> findByFilter(String name, UniversityType type, String location, Pageable pageable);
+    Page<UniversityDto> findByFilter(String name, UniversityType type, String location, Pageable pageable);
     List<StudentDto> findStudentByUniversityId(Long id, int page, int size, String token);
 }

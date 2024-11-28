@@ -94,11 +94,9 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<UniversityDto> findByFilter(String name, UniversityType type, String location, Pageable pageable) {
+    public Page<UniversityDto> findByFilter(String name, UniversityType type, String location, Pageable pageable) {
         Page<University> universities = universityRepository.findAll(UniversitySpecification.withFilters(name, type, location), pageable);
-        return universities.stream()
-                .map(universityDtoMapper::toDto)
-                .toList();
+        return universities.map(universityDtoMapper::toDto);
     }
 
     private University findUniversityOrThrow(Long id) throws UniversityNotFoundException {

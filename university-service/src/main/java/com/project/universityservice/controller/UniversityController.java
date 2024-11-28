@@ -9,6 +9,7 @@ import com.project.universityservice.model.enums.UserRole;
 import com.project.universityservice.service.UniversityService;
 import com.project.universityservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class UniversityController {
     private final UniversityService universityService;
 
     @GetMapping("/search")
-    public ResponseEntity<List<UniversityDto>> getUniversities(@RequestParam(required = false) String name,
+    public ResponseEntity<Page<UniversityDto>> getUniversities(@RequestParam(required = false) String name,
                                                                @RequestParam(required = false) UniversityType type,
                                                                @RequestParam(required = false) String location,
                                                                @RequestParam(defaultValue = "0") int page,
