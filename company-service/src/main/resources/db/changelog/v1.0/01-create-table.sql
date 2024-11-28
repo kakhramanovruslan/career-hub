@@ -3,7 +3,7 @@
 -- changeset olzhas:1
 CREATE TABLE IF NOT EXISTS company (
     id SERIAL PRIMARY KEY,
-    owner_id BIGINT NOT NULL,
+    owner_id BIGINT NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
     type VARCHAR(50) CHECK ( type IN ('PRIVATE', 'STATE')) NOT NULL,
     location VARCHAR(255) NOT NULL,

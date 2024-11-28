@@ -17,4 +17,5 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Long>,
                                            JpaSpecificationExecutor<Student> {
     List<Student> findStudentByUniversityId(Long id, Pageable pageable);
+    void deleteByOwnerId(Long id);
 }

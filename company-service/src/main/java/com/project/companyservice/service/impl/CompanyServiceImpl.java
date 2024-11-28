@@ -53,10 +53,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void deleteCompanyById(Long id, Long userId) {
+    public void deleteCompanyByOwnerId(Long id, Long userId) {
         Company company = findCompanyOrThrow(id);
         isOwner(userId, company.getOwnerId());
-        companyRepository.deleteById(id);
+        companyRepository.deleteByOwnerId(id);
         log.info("Company with id {} has been deleted", id);
     }
 

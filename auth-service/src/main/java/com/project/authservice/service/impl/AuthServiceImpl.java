@@ -2,6 +2,7 @@ package com.project.authservice.service.impl;
 
 import com.project.authservice.exception.IncorrectCredentialsException;
 import com.project.authservice.exception.UserAlreadyExistException;
+import com.project.authservice.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.project.authservice.mapper.RegisterRequestMapper;
@@ -54,4 +55,14 @@ public class AuthServiceImpl implements AuthService {
 
         return authResponse;
     }
+
+    @Override
+    public void delete(Long id) {
+        User user = authRepository.findById(id).orElseThrow(() -> new UserNotFoundException(ExceptionMessages
+                .USER_NOT_FOUND));
+
+        authRepository.deleteById(id);
+    }
+
+
 }

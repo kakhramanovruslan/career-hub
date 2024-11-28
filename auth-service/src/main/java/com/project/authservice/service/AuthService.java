@@ -7,7 +7,9 @@ import com.project.authservice.model.dto.UserDto;
 
 public interface AuthService {
 
-    public UserDto register(RegisterRequest registerRequest);
+    UserDto register(RegisterRequest registerRequest);
 
-    public AuthResponse login(AuthRequest authRequest);
+    AuthResponse login(AuthRequest authRequest);
+
+    void delete(Long id);
 }

@@ -15,7 +15,7 @@ public interface StudentService {
 
     StudentDto addStudent(StudentRequest studentRequest) throws SQLException;
 
-    void deleteStudentById(Long id, Long userId) throws SQLException;
+    void deleteStudentByOwnerId(Long id, Long userId) throws SQLException;
 
     List<StudentDto> findStudentByUniversityId(Long id, Pageable pageable);
 

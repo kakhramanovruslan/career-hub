@@ -16,7 +16,7 @@ public interface UniversityService {
 
     void updateUniversityById(Long id, UniversityRequest universityRequest, Long userId);
 
-    void deleteUniversityById(Long id, Long userId);
+    void deleteUniversityByOwnerId(Long id, Long userId);
 
     StudentRequest createStudentProfile(StudentRequest studentRequest, String token);
 

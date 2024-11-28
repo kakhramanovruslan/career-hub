@@ -3,6 +3,7 @@ package com.project.authservice.controller.advice;
 import com.project.authservice.exception.AccessDeniedException;
 import com.project.authservice.exception.IncorrectCredentialsException;
 import com.project.authservice.exception.UserAlreadyExistException;
+import com.project.authservice.exception.UserNotFoundException;
 import com.project.authservice.model.dto.AppExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     ResponseEntity<AppExceptionResponse> handleAccessDeniedException(AccessDeniedException exception) {
         return buildExceptionResponse(HttpStatus.FORBIDDEN, exception.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    ResponseEntity<AppExceptionResponse> handleUserNotFoundException(UserNotFoundException exception) {
+        return buildExceptionResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     // todo Make SQLException handler safer, we can't give messages from SQL to client

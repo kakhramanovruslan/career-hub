@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS university (
     id SERIAL PRIMARY KEY,
-    owner_id BIGINT NOT NULL,
+    owner_id BIGINT NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(50) CHECK ( type IN ('PRIVATE', 'STATE')) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,

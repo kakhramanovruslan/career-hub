@@ -9,7 +9,7 @@ import com.project.universityservice.mapper.UniversityDtoMapper;
 import com.project.universityservice.mapper.UniversityRequestMapper;
 import com.project.universityservice.model.entity.University;
 import com.project.universityservice.model.enums.UniversityType;
-import com.project.universityservice.producer.EmailProducer;
+//import com.project.universityservice.producer.EmailProducer;
 import com.project.universityservice.repository.UniversityRepository;
 import com.project.universityservice.service.UniversityService;
 import com.project.universityservice.util.ExceptionMessages;
@@ -33,7 +33,7 @@ public class UniversityServiceImpl implements UniversityService {
     private final UniversityDtoMapper universityDtoMapper;
     private final UniversityRequestMapper universityRequestMapper;
     private final StudentClient studentClient;
-    private final EmailProducer emailProducer;
+//    private final EmailProducer emailProducer;
 
     @Override
     public UniversityDto findUniversityById(Long id) {
@@ -58,10 +58,10 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public void deleteUniversityById(Long id, Long userId) {
+    public void deleteUniversityByOwnerId(Long id, Long userId) {
         University university = findUniversityOrThrow(id);
         isOwner(userId, university.getOwnerId());
-        universityRepository.deleteById(id);
+        universityRepository.deleteByOwnerId(id);
         log.info("University with id {} has been deleted", id);
     }
 

@@ -64,15 +64,15 @@ public class UniversityController {
         return ResponseEntity.ok().build();
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteUniversityProfileById(@PathVariable Long id,
-//                                                     @RequestHeader("X-User-Role") UserRole role,
-//                                                     @RequestHeader("X-User-Id") Long userId)
-//            throws UniversityNotFoundException{
-//        hasRole(role, List.of(UserRole.UNIVERSITY));
-//        universityService.deleteUniversityById(id, userId);
-//        return ResponseEntity.ok().build();
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUniversityProfileByOwnerId(@PathVariable Long id,
+                                                     @RequestHeader("X-User-Role") UserRole role,
+                                                     @RequestHeader("X-User-Id") Long userId)
+            throws UniversityNotFoundException{
+        hasRole(role, List.of(UserRole.UNIVERSITY));
+        universityService.deleteUniversityByOwnerId(id, userId);
+        return ResponseEntity.ok().build();
+    }
 
 //    @PostMapping("/students/createStudent")
 //    public ResponseEntity<StudentRequest> createStudentProfileForUniversity(@RequestBody StudentRequest studentDto,

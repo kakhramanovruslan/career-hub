@@ -56,10 +56,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudentById(Long id, Long userId) throws StudentNotFoundException, AccessDeniedException, SQLException {
+    public void deleteStudentByOwnerId(Long id, Long userId) throws StudentNotFoundException, AccessDeniedException, SQLException {
         Student student = findStudentOrThrow(id);
         isOwner(userId, student.getOwnerId());
-        studentRepository.deleteById(id);
+        studentRepository.deleteByOwnerId(id);
         log.info("Student with id {} has been deleted", id);
     }
 

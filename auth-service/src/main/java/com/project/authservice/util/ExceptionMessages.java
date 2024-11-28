@@ -6,4 +6,6 @@ public class ExceptionMessages {
     public static final String INCORRECT_CREDENTIALS = "Incorrect username or password";
     public static final String ACCESS_DENIED = "Access denied: you do not have the necessary permissions to access this resource.";
 
+    public static final String USER_NOT_FOUND = "User not found.";
+
 }

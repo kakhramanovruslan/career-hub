@@ -60,12 +60,12 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCompanyById(@PathVariable Long id,
+    public ResponseEntity<Void> deleteCompanyByOwnerId(@PathVariable Long id,
                                                   @RequestHeader("X-User-Role") UserRole role,
                                                   @RequestHeader("X-User-Id") Long userId)
             throws CompanyNotFoundException{
         hasRole(role, List.of(UserRole.COMPANY));
-        companyService.deleteCompanyById(id, userId);
+        companyService.deleteCompanyByOwnerId(id, userId);
         return ResponseEntity.ok().build();
     }
 

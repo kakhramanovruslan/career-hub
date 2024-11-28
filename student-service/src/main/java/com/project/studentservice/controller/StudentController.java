@@ -61,15 +61,15 @@ public class StudentController {
         return ResponseEntity.status(201).body(studentService.addStudent(studentRequest));
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteStudentById(@PathVariable  Long id,
-//                                                  @RequestHeader("X-User-Role") UserRole role,
-//                                                  @RequestHeader("X-User-Id") Long userId)
-//            throws StudentNotFoundException, SQLException {
-//        hasRole(role, List.of(UserRole.UNIVERSITY));
-//        studentService.deleteStudentById(id, userId);
-//        return ResponseEntity.ok().build();
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStudentByOwnerId(@PathVariable Long id,
+                                                  @RequestHeader("X-User-Role") UserRole role,
+                                                  @RequestHeader("X-User-Id") Long userId)
+            throws StudentNotFoundException, SQLException {
+        hasRole(role, List.of(UserRole.UNIVERSITY));
+        studentService.deleteStudentByOwnerId(id, userId);
+        return ResponseEntity.ok().build();
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateStudentProfileById(@PathVariable Long id,
