@@ -30,6 +30,8 @@ public class Company {
     @Enumerated(EnumType.STRING)
     private CompanyType type;
 
+    private String email;
+
     private String location;
 
     private String contactPhone;
@@ -39,6 +41,8 @@ public class Company {
     private String website;
 
     private Integer establishedYear;
+
+    //todo list of savedStudents
 
     @CreationTimestamp
     private LocalDateTime createdAt;

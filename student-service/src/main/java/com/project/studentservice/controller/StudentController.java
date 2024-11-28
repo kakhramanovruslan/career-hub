@@ -53,16 +53,14 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<StudentDto> createStudentProfile(@RequestBody StudentRequest studentRequest,
-                                                    @RequestHeader("X-User-Role") UserRole role,
-                                                    @RequestHeader("X-User-Id") Long userId)
+                                                    @RequestHeader("X-User-Role") UserRole role)
             throws SQLException {
-        hasRole(role, List.of(UserRole.STUDENT));
-        studentRequest.setOwnerId(userId);
+        hasRole(role, List.of(UserRole.UNIVERSITY));
         return ResponseEntity.status(201).body(studentService.addStudent(studentRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudentByOwnerId(@PathVariable Long id,
+    public ResponseEntity<Void> deleteStudentProfileByOwnerId(@PathVariable Long id,
                                                   @RequestHeader("X-User-Role") UserRole role,
                                                   @RequestHeader("X-User-Id") Long userId)
             throws StudentNotFoundException, SQLException {

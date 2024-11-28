@@ -4,13 +4,14 @@
 CREATE TABLE IF NOT EXISTS company (
     id SERIAL PRIMARY KEY,
     owner_id BIGINT NOT NULL UNIQUE,
-    name VARCHAR(255) NOT NULL,
-    type VARCHAR(50) CHECK ( type IN ('PRIVATE', 'STATE')) NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    contact_phone VARCHAR(20) NOT NULL,
+    name VARCHAR(255),
+    type VARCHAR(50) CHECK ( type IN ('PRIVATE', 'STATE')),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    location VARCHAR(255),
+    contact_phone VARCHAR(20),
     industry VARCHAR(255),
     website VARCHAR(255),
-    established_year INT NOT NULL CHECK (established_year <= EXTRACT(YEAR FROM CURRENT_DATE)),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ,
+    established_year INT CHECK (established_year <= EXTRACT(YEAR FROM CURRENT_DATE)),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

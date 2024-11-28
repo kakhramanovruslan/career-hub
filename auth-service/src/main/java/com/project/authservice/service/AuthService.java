@@ -11,5 +11,5 @@ public interface AuthService {
 
     AuthResponse login(AuthRequest authRequest);
 
-    void delete(Long id);
+    void delete(Long userId);
 }

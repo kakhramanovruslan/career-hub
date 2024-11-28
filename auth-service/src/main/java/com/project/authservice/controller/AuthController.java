@@ -5,29 +5,23 @@ import com.project.authservice.client.StudentClient;
 import com.project.authservice.client.UniversityClient;
 import com.project.authservice.exception.AccessDeniedException;
 import com.project.authservice.model.company.CompanyRequest;
-import com.project.authservice.model.company.CompanyType;
 import com.project.authservice.model.dto.*;
-import com.project.authservice.model.student.DegreeEnum;
 import com.project.authservice.model.student.StudentRequest;
 import com.project.authservice.model.types.UserRole;
 import com.project.authservice.model.university.UniversityRequest;
-import com.project.authservice.model.university.UniversityType;
 import com.project.authservice.service.EmailService;
 import com.project.authservice.util.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.project.authservice.service.AuthService;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RequestMapping("/auth")
 @RestController
 @RequiredArgsConstructor
-@EnableFeignClients
 public class AuthController {
 
     private final AuthService authService;
@@ -45,25 +39,30 @@ public class AuthController {
 //    }
 
     @PostMapping("/company/registration")
-    public ResponseEntity<AuthResponse> companyRegister(@RequestBody RegisterRequest request,
-                                                        @RequestHeader("X-User-Role") UserRole role) {
+    public ResponseEntity<UserDto> companyRegister(@RequestBody RegisterRequest request,
+                                                        @RequestHeader("X-User-Role") UserRole role,
+                                                        @RequestHeader("Authorization") String token) {
         hasRole(role, List.of(UserRole.ADMIN));
 
         UserDto userDto = authService.register(request);
-        companyClient.createCompany(new CompanyRequest("", userDto.getId(), CompanyType.NONE, "", "", "", "", 0));
+        companyClient.createCompanyProfile(CompanyRequest.builder()
+                        .ownerId(userDto.getId())
+                        .email(request.getEmail())
+                        .build(), token);
         emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
 
-        return ResponseEntity.ok().body(new AuthResponse());
+        return ResponseEntity.ok().body(userDto);
 
     }
 
     @DeleteMapping("/company/delete/{id}")
     public ResponseEntity<HttpStatus> companyDelete(@PathVariable Long id,
-                                                      @RequestHeader("X-User-Role") UserRole role) {
+                                                    @RequestHeader("X-User-Role") UserRole role,
+                                                    @RequestHeader("Authorization") String token) {
         hasRole(role, List.of(UserRole.ADMIN));
 
+        companyClient.deleteCompanyProfileByOwnerId(id, token);
         authService.delete(id);
-        companyClient.deleteCompanyByOwnerId(id);
 
         return ResponseEntity.ok(HttpStatus.OK);
 
@@ -72,51 +71,63 @@ public class AuthController {
 
 
     @PostMapping("/university/registration")
-    public ResponseEntity<AuthResponse> universityRegister(@RequestBody RegisterRequest request,
-                                                           @RequestHeader("X-User-Role") UserRole role) {
+    public ResponseEntity<UserDto> universityRegister(@RequestBody RegisterRequest request,
+                                                           @RequestHeader("X-User-Role") UserRole role,
+                                                           @RequestHeader("Authorization") String token){
         hasRole(role, List.of(UserRole.ADMIN));
 
         UserDto userDto = authService.register(request);
-        universityClient.createUniversity(new UniversityRequest(userDto.getId(), "", UniversityType.NONE, "", "", "", 0, ""));
+        universityClient.createUniversityProfile(UniversityRequest.builder()
+                        .ownerId(userDto.getId())
+                        .email(request.getEmail())
+                        .build(), token);
         emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
 
-        return ResponseEntity.ok().body(new AuthResponse());
+        return ResponseEntity.ok().body(userDto);
 
     }
 
     @DeleteMapping("/university/delete/{id}")
     public ResponseEntity<HttpStatus> universityDelete(@PathVariable Long id,
-                                                       @RequestHeader("X-User-Role") UserRole role) {
+                                                       @RequestHeader("X-User-Role") UserRole role,
+                                                       @RequestHeader("Authorization") String token) {
 
         hasRole(role, List.of(UserRole.ADMIN));
 
+        universityClient.deleteUniversityProfileByOwnerId(id, token);
         authService.delete(id);
-        universityClient.deleteUniversityProfileByOwnerId(id);
 
         return ResponseEntity.ok(HttpStatus.OK);
 
     }
 
     @PostMapping("/student/registration")
-    public ResponseEntity<AuthResponse> studentRegister(@RequestBody RegisterRequest request,
-                                                        @RequestHeader("X-User-Role") UserRole role) {
+    public ResponseEntity<UserDto> studentRegister(@RequestBody RegisterRequest request,
+                                                        @RequestHeader("X-User-Role") UserRole role,
+                                                        @RequestHeader("X-User-Id") Long userId,
+                                                        @RequestHeader("Authorization") String token) {
         hasRole(role, List.of(UserRole.UNIVERSITY));
 
         UserDto userDto = authService.register(request);
-        studentClient.createStudent(new StudentRequest(userDto.getId(), "", "", "", 0L, BigDecimal.ZERO, "", DegreeEnum.NONE, 0, 0));
+        studentClient.createStudentProfile(StudentRequest.builder()
+                                                         .ownerId(userDto.getId())
+                                                         .email(request.getEmail())
+                                                         .universityId(userId)
+                                                         .build(), token);
         emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
 
-        return ResponseEntity.ok().body(new AuthResponse());
+        return ResponseEntity.ok().body(userDto);
 
     }
 
-    @DeleteMapping("/student/delete/{id}")
-    public ResponseEntity<HttpStatus> studentDelete(@PathVariable Long id,
-                                                        @RequestHeader("X-User-Role") UserRole role) {
+    @DeleteMapping("/student/delete/{userId}")
+    public ResponseEntity<HttpStatus> studentDelete(@PathVariable Long userId,
+                                                    @RequestHeader("X-User-Role") UserRole role,
+                                                    @RequestHeader("Authorization") String token) {
         hasRole(role, List.of(UserRole.UNIVERSITY));
 
-        authService.delete(id);
-        studentClient.deleteStudentByOwnerId(id);
+        authService.delete(userId);
+        studentClient.deleteStudentProfileByOwnerId(userId, token);
 
         return ResponseEntity.ok(HttpStatus.OK);
 

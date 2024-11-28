@@ -1,11 +1,8 @@
 package com.project.universityservice.controller;
 
 import com.project.universityservice.exception.AccessDeniedException;
-import com.project.universityservice.model.dto.StudentDto;
-import com.project.universityservice.model.dto.StudentRequest;
 import com.project.universityservice.model.dto.UniversityRequest;
 import com.project.universityservice.model.dto.UniversityDto;
-import com.project.universityservice.exception.StudentNotFoundException;
 import com.project.universityservice.exception.UniversityNotFoundException;
 import com.project.universityservice.model.enums.UniversityType;
 import com.project.universityservice.model.enums.UserRole;
@@ -16,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ServerWebExchange;
 
 import java.util.List;
 
@@ -46,10 +42,8 @@ public class UniversityController {
 
     @PostMapping("/create")
     public ResponseEntity<UniversityDto> createUniversityProfile(@RequestBody UniversityRequest universityRequest,
-                                                          @RequestHeader("X-User-Role") UserRole role,
-                                                          @RequestHeader("X-User-Id") Long userId){
-        hasRole(role, List.of(UserRole.UNIVERSITY));
-        universityRequest.setOwnerId(userId);
+                                                                 @RequestHeader("X-User-Role") UserRole role){
+        hasRole(role, List.of(UserRole.ADMIN));
         return ResponseEntity.status(201).body(universityService.createUniversity(universityRequest));
     }
 
@@ -64,13 +58,12 @@ public class UniversityController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUniversityProfileByOwnerId(@PathVariable Long id,
-                                                     @RequestHeader("X-User-Role") UserRole role,
-                                                     @RequestHeader("X-User-Id") Long userId)
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUniversityProfileByOwnerId(@PathVariable Long userId,
+                                                                @RequestHeader("X-User-Role") UserRole role)
             throws UniversityNotFoundException{
-        hasRole(role, List.of(UserRole.UNIVERSITY));
-        universityService.deleteUniversityByOwnerId(id, userId);
+        hasRole(role, List.of(UserRole.ADMIN));
+        universityService.deleteUniversityByOwnerId(userId);
         return ResponseEntity.ok().build();
     }
 

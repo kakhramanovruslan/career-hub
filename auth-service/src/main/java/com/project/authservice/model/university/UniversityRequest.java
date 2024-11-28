@@ -3,12 +3,14 @@ package com.project.authservice.model.university;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UniversityRequest {
     private Long ownerId; // К AuthService кто создал универ
 

@@ -14,7 +14,7 @@ public interface CompanyService {
 
     void updateCompanyById(Long id, CompanyRequest companyRequest, Long userId);
 
-    void deleteCompanyByOwnerId(Long id, Long userId);
+    void deleteCompanyByOwnerId(Long userId);
 
     List<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry, Pageable pageable);
 }

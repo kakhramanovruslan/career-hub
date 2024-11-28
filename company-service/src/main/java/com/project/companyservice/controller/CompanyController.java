@@ -40,11 +40,9 @@ public class CompanyController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyRequest companyRequest,
-                                                    @RequestHeader("X-User-Role") UserRole role,
-                                                    @RequestHeader("X-User-Id") Long userId){
-        hasRole(role, List.of(UserRole.COMPANY));
-        companyRequest.setOwnerId(userId);
+    public ResponseEntity<CompanyDto> createCompanyProfile(@RequestBody CompanyRequest companyRequest,
+                                                           @RequestHeader("X-User-Role") UserRole role){
+        hasRole(role, List.of(UserRole.ADMIN));
         return ResponseEntity.status(201).body(companyService.createCompany(companyRequest));
     }
 
@@ -59,13 +57,12 @@ public class CompanyController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCompanyByOwnerId(@PathVariable Long id,
-                                                  @RequestHeader("X-User-Role") UserRole role,
-                                                  @RequestHeader("X-User-Id") Long userId)
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteCompanyByOwnerId(@PathVariable Long userId,
+                                                  @RequestHeader("X-User-Role") UserRole role)
             throws CompanyNotFoundException{
-        hasRole(role, List.of(UserRole.COMPANY));
-        companyService.deleteCompanyByOwnerId(id, userId);
+        hasRole(role, List.of(UserRole.ADMIN));
+        companyService.deleteCompanyByOwnerId(userId);
         return ResponseEntity.ok().build();
     }
 

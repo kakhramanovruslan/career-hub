@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -32,7 +33,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRequestMapper studentRequestMapper;
 
     @Override
-    public StudentDto findStudentById(Long id) throws StudentNotFoundException, SQLException {
+    public StudentDto findStudentById(Long id) throws StudentNotFoundException {
         Student student = findStudentOrThrow(id);
         log.info("Student with id {} has been sent to the client", id);
         return studentDtoMapper.toDto(student);
@@ -48,7 +49,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDto addStudent(StudentRequest studentRequest) throws SQLException {
+    public StudentDto addStudent(StudentRequest studentRequest) {
         Student student = studentRepository.save(studentRequestMapper.toEntity(studentRequest));
         StudentDto studentDto = studentDtoMapper.toDto(student);
         log.info("Adding student with id {} to the database", studentDto.getId());
@@ -56,15 +57,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudentByOwnerId(Long id, Long userId) throws StudentNotFoundException, AccessDeniedException, SQLException {
-        Student student = findStudentOrThrow(id);
-        isOwner(userId, student.getOwnerId());
+    @Transactional
+    public void deleteStudentByOwnerId(Long id, Long userId) throws StudentNotFoundException, AccessDeniedException {
+        Optional<Student> student = studentRepository.findStudentByOwnerId(id);
+        if(student.isEmpty()) throw new StudentNotFoundException(ExceptionMessages.STUDENT_NOT_FOUND);
+        isOwner(userId, student.get().getUniversityId());
         studentRepository.deleteByOwnerId(id);
         log.info("Student with id {} has been deleted", id);
     }
 
     @Override
-    public void updateStudentById(Long id, StudentRequest studentRequest, Long userId) throws StudentNotFoundException, AccessDeniedException, SQLException {
+    public void updateStudentById(Long id, StudentRequest studentRequest, Long userId) throws StudentNotFoundException, AccessDeniedException {
         Student student = findStudentOrThrow(id);
         isOwner(userId, student.getOwnerId());
         studentRepository.save(studentRequestMapper.updateStudentFromRequest(studentRequest, student));

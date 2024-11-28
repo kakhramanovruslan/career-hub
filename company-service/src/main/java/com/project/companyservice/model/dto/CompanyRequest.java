@@ -18,6 +18,8 @@ public class CompanyRequest {
     @Enumerated(EnumType.STRING)
     private CompanyType type;
 
+    private String email;
+
     private String location;
 
     private String contactPhone;

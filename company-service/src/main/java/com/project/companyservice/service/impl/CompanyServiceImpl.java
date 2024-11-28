@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,11 +54,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void deleteCompanyByOwnerId(Long id, Long userId) {
-        Company company = findCompanyOrThrow(id);
-        isOwner(userId, company.getOwnerId());
-        companyRepository.deleteByOwnerId(id);
-        log.info("Company with id {} has been deleted", id);
+    @Transactional
+    public void deleteCompanyByOwnerId(Long userId) {
+        Optional<Company> company = companyRepository.findCompanyByOwnerId(userId);
+        if(company.isEmpty()) throw new CompanyNotFoundException(ExceptionMessages.COMPANY_NOT_FOUND);
+        isOwner(userId, company.get().getOwnerId());
+        companyRepository.deleteByOwnerId(userId);
+        log.info("Company with id {} has been deleted", userId);
     }
 
     @Override

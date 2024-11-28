@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "student-service", url = "http://localhost:8080/student") //TODO url of api gateway
 public interface StudentClient {
     @PostMapping("")
-    StudentRequest createStudent(@RequestBody StudentRequest studentDto);
+    StudentRequest createStudentProfile(@RequestBody StudentRequest studentDto, @RequestHeader("Authorization") String token);
 
-    @DeleteMapping("/{id}")
-    void deleteStudentByOwnerId(@PathVariable Long id);
+    @DeleteMapping("/{userId}")
+    void deleteStudentProfileByOwnerId(@PathVariable Long userId, @RequestHeader("Authorization") String token);
 }

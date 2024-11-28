@@ -1,5 +1,5 @@
 package com.project.universityservice.model.enums;
 
 public enum UniversityType {
-    STATE, PRIVATE
+    STATE, PRIVATE, NONE, COLLEGE
 }

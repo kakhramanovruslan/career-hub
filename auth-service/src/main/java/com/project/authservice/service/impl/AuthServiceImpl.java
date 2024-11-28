@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
     public UserDto register(RegisterRequest registerRequest) throws UserAlreadyExistException {
         if (authRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
             throw new UserAlreadyExistException(ExceptionMessages.USER_ALREADY_EXIST);
-        };
+        }
 
         registerRequest.setPassword(PasswordUtil.hashPassword(registerRequest.getPassword()));
 
@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
 
         if (!PasswordUtil.checkPassword(authRequest.getPassword(), user.getPassword())){
             throw new IncorrectCredentialsException(ExceptionMessages.INCORRECT_CREDENTIALS);
-        };
+        }
 
         AuthResponse authResponse = new AuthResponse();
         authResponse.setToken(jwtTokenUtil.generateToken(user.getId(), user.getRole()));
@@ -57,11 +57,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void delete(Long id) {
-        User user = authRepository.findById(id).orElseThrow(() -> new UserNotFoundException(ExceptionMessages
+    public void delete(Long userId) {
+         authRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ExceptionMessages
                 .USER_NOT_FOUND));
 
-        authRepository.deleteById(id);
+        authRepository.deleteById(userId);
     }
 
 
