@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface StudentService {
 
-    StudentDto findStudentById(Long id) throws SQLException;
+    StudentDto findStudentByOwnerId(Long id) throws SQLException;
 
     StudentDto addStudent(StudentRequest studentRequest) throws SQLException;
 
@@ -20,7 +20,7 @@ public interface StudentService {
 
     List<StudentDto> findStudentByUniversityId(Long id, Pageable pageable);
 
-    void updateStudentById(Long id, StudentRequest studentRequest, Long userId) throws SQLException;
+    void updateStudentProfileByOwnerId(Long id, StudentRequest studentRequest, Long userId) throws SQLException;
 
     Page<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable);
 }

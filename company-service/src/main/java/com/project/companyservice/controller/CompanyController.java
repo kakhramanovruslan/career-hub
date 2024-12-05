@@ -35,9 +35,9 @@ public class CompanyController {
         return ResponseEntity.ok().body(companyService.findByFilter(name, type, location, industry, pageable));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CompanyDto> getCompanyById(@PathVariable Long id) throws CompanyNotFoundException {
-        return ResponseEntity.ok().body(companyService.findCompanyById(id));
+    @GetMapping("/{ownerId}")
+    public ResponseEntity<CompanyDto> getCompanyByOwnerId(@PathVariable Long ownerId) throws CompanyNotFoundException {
+        return ResponseEntity.ok().body(companyService.findCompanyByOwnerId(ownerId));
     }
 
     @PostMapping("/create")
@@ -47,14 +47,14 @@ public class CompanyController {
         return ResponseEntity.status(201).body(companyService.createCompany(companyRequest));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateCompanyById(@PathVariable Long id,
+    @PutMapping("/update/{ownerId}")
+    public ResponseEntity<Void> updateCompanyByOwnerId(@PathVariable Long ownerId,
                                                   @RequestBody CompanyRequest companyRequest,
                                                   @RequestHeader("X-User-Role") UserRole role,
                                                   @RequestHeader("X-User-Id") Long userId)
             throws CompanyNotFoundException {
         hasRole(role, List.of(UserRole.COMPANY));
-        companyService.updateCompanyById(id, companyRequest, userId);
+        companyService.updateCompanyByOwnerId(ownerId, companyRequest, userId);
         return ResponseEntity.ok().build();
     }
 

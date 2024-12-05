@@ -33,10 +33,13 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRequestMapper studentRequestMapper;
 
     @Override
-    public StudentDto findStudentById(Long id) throws StudentNotFoundException {
-        Student student = findStudentOrThrow(id);
-        log.info("Student with id {} has been sent to the client", id);
-        return studentDtoMapper.toDto(student);
+    public StudentDto findStudentByOwnerId(Long ownerId) throws StudentNotFoundException {
+        Optional<Student> student = studentRepository.findStudentByOwnerId(ownerId);
+        if (student.isPresent()) {
+            return studentDtoMapper.toDto(student.get());
+        } else {
+            throw new StudentNotFoundException("University not found for ownerId: " + ownerId);
+        }
     }
 
     @Override
@@ -67,11 +70,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void updateStudentById(Long id, StudentRequest studentRequest, Long userId) throws StudentNotFoundException, AccessDeniedException {
-        Student student = findStudentOrThrow(id);
-        isOwner(userId, student.getOwnerId());
-        studentRepository.save(studentRequestMapper.updateStudentFromRequest(studentRequest, student));
-        log.info("Updating student with id {}", id);
+    public void updateStudentProfileByOwnerId(Long ownerId, StudentRequest studentRequest, Long userId) throws StudentNotFoundException, AccessDeniedException {
+        Optional<Student> student = studentRepository.findStudentByOwnerId(ownerId);
+        if(student.isEmpty()) throw new StudentNotFoundException(ExceptionMessages.STUDENT_NOT_FOUND);
+        isOwner(userId, ownerId);
+        studentRepository.save(studentRequestMapper.updateStudentFromRequest(studentRequest, student.get()));
+        log.info("Updating student with id {}", student.get().getId());
     }
 
     @Override

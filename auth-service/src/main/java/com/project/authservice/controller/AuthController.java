@@ -81,7 +81,7 @@ public class AuthController {
                         .ownerId(userDto.getId())
                         .email(request.getEmail())
                         .build(), token);
-        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
+//        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
 
         return ResponseEntity.ok().body(userDto);
 

@@ -36,9 +36,9 @@ public class UniversityController {
         return ResponseEntity.ok().body(universityService.findByFilter(name, type, location, pageable));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UniversityDto> getUniversityById(@PathVariable Long id) throws UniversityNotFoundException {
-        return ResponseEntity.ok().body(universityService.findUniversityById(id));
+    @GetMapping("/{ownerId}")
+    public ResponseEntity<UniversityDto> getUniversityByOwnerId(@PathVariable Long ownerId) throws UniversityNotFoundException {
+        return ResponseEntity.ok().body(universityService.findUniversityByOwnerId(ownerId));
     }
 
     @PostMapping("/create")
@@ -48,14 +48,14 @@ public class UniversityController {
         return ResponseEntity.status(201).body(universityService.createUniversity(universityRequest));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateUniversityProfileById(@PathVariable Long id,
+    @PutMapping("/update/{ownerId}")
+    public ResponseEntity<Void> updateUniversityProfileByOwnerId(@PathVariable Long ownerId,
                                                      @RequestBody UniversityRequest universityRequest,
                                                      @RequestHeader("X-User-Role") UserRole role,
                                                      @RequestHeader("X-User-Id") Long userId)
             throws UniversityNotFoundException {
         hasRole(role, List.of(UserRole.UNIVERSITY));
-        universityService.updateUniversityById(id, universityRequest, userId);
+        universityService.updateUniversityByOwnerId(ownerId, universityRequest, userId);
         return ResponseEntity.ok().build();
     }
 

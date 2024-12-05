@@ -39,9 +39,9 @@ public class StudentController {
         return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, minGpa, maxGpa, pageable));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentDto> getStudentById(@PathVariable Long id) throws StudentNotFoundException, SQLException {
-        return ResponseEntity.ok().body(studentService.findStudentById(id));
+    @GetMapping("/{ownerId}")
+    public ResponseEntity<StudentDto> getStudentByOwnerId(@PathVariable Long ownerId) throws StudentNotFoundException, SQLException {
+        return ResponseEntity.ok().body(studentService.findStudentByOwnerId(ownerId));
     }
 
     @GetMapping("/getByUniversityId/{id}")
@@ -70,14 +70,14 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateStudentProfileById(@PathVariable Long id,
+    @PutMapping("/{ownerId}")
+    public ResponseEntity<Void> updateStudentProfileByOwnerId(@PathVariable Long ownerId,
                                                   @RequestBody StudentRequest studentRequest,
                                                   @RequestHeader("X-User-Role") UserRole role,
                                                   @RequestHeader("X-User-Id") Long userId)
             throws StudentNotFoundException, SQLException {
         hasRole(role, List.of(UserRole.STUDENT));
-        studentService.updateStudentById(id, studentRequest, userId);
+        studentService.updateStudentProfileByOwnerId(ownerId, studentRequest, userId);
         return ResponseEntity.ok().build();
     }
 

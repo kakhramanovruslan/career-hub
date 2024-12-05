@@ -11,11 +11,11 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface UniversityService {
-    UniversityDto findUniversityById(Long id);
+    UniversityDto findUniversityByOwnerId(Long ownerId);
 
     UniversityDto createUniversity(UniversityRequest universityRequest);
 
-    void updateUniversityById(Long id, UniversityRequest universityRequest, Long userId);
+    void updateUniversityByOwnerId(Long ownerId, UniversityRequest universityRequest, Long userId);
 
     void deleteUniversityByOwnerId(Long userId);
 

@@ -32,9 +32,13 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRequestMapper companyRequestMapper;
 
     @Override
-    public CompanyDto findCompanyById(Long id) {
-        Company company = findCompanyOrThrow(id);
-        return companyDtoMapper.toDto(company);
+    public CompanyDto findCompanyByOwnerId(Long ownerId) {
+        Optional<Company> company = companyRepository.findCompanyByOwnerId(ownerId);
+        if (company.isPresent()) {
+            return companyDtoMapper.toDto(company.get());
+        } else {
+            throw new CompanyNotFoundException("Company not found for ownerId: " + ownerId);
+        }
     }
 
     @Override
@@ -46,11 +50,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void updateCompanyById(Long id, CompanyRequest companyRequest, Long userId) {
-        Company company = findCompanyOrThrow(id);
-        isOwner(userId, company.getOwnerId());
-        companyRepository.save(companyRequestMapper.updateCompanyFromRequest(companyRequest, company));
-        log.info("Updating company with id {}", id);
+    public void updateCompanyByOwnerId(Long ownerId, CompanyRequest companyRequest, Long userId) {
+        Optional<Company> company = companyRepository.findCompanyByOwnerId(ownerId);
+        if(company.isEmpty()) throw new CompanyNotFoundException(ExceptionMessages.COMPANY_NOT_FOUND);
+        isOwner(userId, ownerId);
+        companyRepository.save(companyRequestMapper.updateCompanyFromRequest(companyRequest, company.get()));
+        log.info("Updating company with id {}", company.get().getId());
     }
 
     @Override

@@ -37,9 +37,13 @@ public class UniversityServiceImpl implements UniversityService {
 //    private final EmailProducer emailProducer;
 
     @Override
-    public UniversityDto findUniversityById(Long id) {
-        University university = findUniversityOrThrow(id);
-        return universityDtoMapper.toDto(university);
+    public UniversityDto findUniversityByOwnerId(Long ownerId) {
+        Optional<University> university = universityRepository.findUniversityByOwnerId(ownerId);
+        if (university.isPresent()) {
+            return universityDtoMapper.toDto(university.get());
+        } else {
+            throw new UniversityNotFoundException("University not found for ownerId: " + ownerId);
+        }
     }
 
     @Override
@@ -51,11 +55,12 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public void updateUniversityById(Long id, UniversityRequest universityRequest, Long userId) {
-        University university = findUniversityOrThrow(id);
-        isOwner(userId, university.getOwnerId());
-        universityRepository.save(universityRequestMapper.updateUniversityFromRequest(universityRequest, university));
-        log.info("Updating university with id {}", id);
+    public void updateUniversityByOwnerId(Long ownerId, UniversityRequest universityRequest, Long userId) {
+        Optional<University> university = universityRepository.findUniversityByOwnerId(ownerId);
+        if(university.isEmpty()) throw new UniversityNotFoundException(ExceptionMessages.UNIVERSITY_NOT_FOUND);
+        isOwner(userId, ownerId);
+        universityRepository.save(universityRequestMapper.updateUniversityFromRequest(universityRequest, university.get()));
+        log.info("Updating university with id {}", university.get().getId());
     }
 
     @Override
