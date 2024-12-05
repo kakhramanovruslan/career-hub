@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,5 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     List<Student> findStudentByUniversityId(Long id, Pageable pageable);
     void deleteByOwnerId(Long id);
     Optional<Student> findStudentByOwnerId(Long id);
+    Page<Student> findByOwnerIdIn(List<Long> studentOwnerIds, Pageable pageable);
 }

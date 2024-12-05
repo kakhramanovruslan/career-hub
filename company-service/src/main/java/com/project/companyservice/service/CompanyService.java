@@ -18,4 +18,5 @@ public interface CompanyService {
     void deleteCompanyByOwnerId(Long userId);
 
     Page<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry, Pageable pageable);
+
 }

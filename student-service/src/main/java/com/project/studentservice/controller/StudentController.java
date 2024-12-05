@@ -39,6 +39,14 @@ public class StudentController {
         return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, minGpa, maxGpa, pageable));
     }
 
+    @GetMapping("/getBatch")
+    public ResponseEntity<Page<StudentDto>> getStudentsWithBatch(@RequestBody List<Long> studentOwnerIds,
+                                                                 @RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok().body(studentService.findByStudentsBatch(studentOwnerIds, pageable));
+    }
+
     @GetMapping("/{ownerId}")
     public ResponseEntity<StudentDto> getStudentByOwnerId(@PathVariable Long ownerId) throws StudentNotFoundException, SQLException {
         return ResponseEntity.ok().body(studentService.findStudentByOwnerId(ownerId));
@@ -54,8 +62,9 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<StudentDto> createStudentProfile(@RequestBody StudentRequest studentRequest,
-                                                    @RequestHeader("X-User-Role") UserRole role)
+                                                           @RequestHeader("X-User-Role") UserRole role)
             throws SQLException {
+        System.out.println(studentRequest.toString());
         hasRole(role, List.of(UserRole.UNIVERSITY));
         return ResponseEntity.status(201).body(studentService.addStudent(studentRequest));
     }

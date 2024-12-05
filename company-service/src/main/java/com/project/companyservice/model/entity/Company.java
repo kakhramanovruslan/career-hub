@@ -10,6 +10,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -42,11 +46,13 @@ public class Company {
 
     private Integer establishedYear;
 
-    //todo list of savedStudents
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private Set<FavouriteStudent> favouriteStudents;
+
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDto addStudent(StudentRequest studentRequest) {
+        System.out.println(studentRequestMapper.toEntity(studentRequest));
         Student student = studentRepository.save(studentRequestMapper.toEntity(studentRequest));
         StudentDto studentDto = studentDtoMapper.toDto(student);
         log.info("Adding student with id {} to the database", studentDto.getId());
@@ -81,6 +83,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Page<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable) {
         Page<Student> students = studentRepository.findAll(StudentSpecification.withFilters(firstName, lastName, degree, currentYear, minGpa, maxGpa), pageable);
+        return students.map(studentDtoMapper::toDto);
+    }
+
+    @Override
+    public Page<StudentDto> findByStudentsBatch(List<Long> studentOwnerIds, Pageable pageable) {
+        Page<Student> students = studentRepository.findByOwnerIdIn(studentOwnerIds, pageable);
         return students.map(studentDtoMapper::toDto);
     }
 

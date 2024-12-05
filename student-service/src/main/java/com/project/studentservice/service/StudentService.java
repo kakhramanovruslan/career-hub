@@ -23,4 +23,5 @@ public interface StudentService {
     void updateStudentProfileByOwnerId(Long id, StudentRequest studentRequest, Long userId) throws SQLException;
 
     Page<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable);
+    Page<StudentDto> findByStudentsBatch(List<Long> studentOwnerIds, Pageable pageable);
 }

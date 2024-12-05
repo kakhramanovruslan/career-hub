@@ -15,3 +15,14 @@ CREATE TABLE IF NOT EXISTS company (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+-- changeset olzhas:2
+CREATE TABLE IF NOT EXISTS company_favourite_student_ids (
+    id SERIAL PRIMARY KEY,
+    owner_id BIGINT NOT NULL,
+    company_id BIGINT NOT NULL,
+    student_id BIGINT NOT NULL,
+    FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE,
+    UNIQUE (company_id, student_id)
+);
