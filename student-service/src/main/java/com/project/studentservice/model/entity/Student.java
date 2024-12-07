@@ -36,6 +36,8 @@ public class Student {
 
     private BigDecimal gpa;
 
+    private String aboutUs;
+
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)

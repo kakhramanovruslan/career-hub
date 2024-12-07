@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS company (
     contact_phone VARCHAR(20),
     industry VARCHAR(255),
     website VARCHAR(255),
+    about_us TEXT,
     established_year INT CHECK (established_year <= EXTRACT(YEAR FROM CURRENT_DATE)),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

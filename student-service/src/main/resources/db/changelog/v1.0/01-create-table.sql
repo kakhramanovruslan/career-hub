@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS student (
     university_id BIGINT NOT NULL,
     gpa DECIMAL(3, 2) CHECK (gpa >= 0.0 AND gpa <= 4.0),
     phone_number VARCHAR(20),
+    about_us TEXT,
     degree VARCHAR(20) CHECK (degree IN ('BACHELOR', 'MASTER', 'DOCTORATE')),
     current_year INT,
     year_of_enrollment INT CHECK (year_of_enrollment >= 2000 AND year_of_enrollment <= EXTRACT(YEAR FROM CURRENT_DATE)),

@@ -28,4 +28,6 @@ public class UniversityRequest {
     private Integer establishedYear;
 
     private String website;
+
+    private String aboutUs;
 }

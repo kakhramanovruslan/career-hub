@@ -24,6 +24,8 @@ public class CompanyRequest {
 
     private String contactPhone;
 
+    private String aboutUs;
+
     private String industry;
 
     private String website;

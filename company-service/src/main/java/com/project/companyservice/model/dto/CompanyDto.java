@@ -26,6 +26,8 @@ public class CompanyDto {
 
     private String location;
 
+    private String aboutUs;
+
     private String contactPhone;
 
     private String industry;

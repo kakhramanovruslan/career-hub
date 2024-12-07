@@ -40,6 +40,8 @@ public class University {
 
     private String website;
 
+    private String aboutUs;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

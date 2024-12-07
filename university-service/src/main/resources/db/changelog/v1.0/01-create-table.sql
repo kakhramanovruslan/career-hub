@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS university (
     email VARCHAR(100) NOT NULL UNIQUE,
     contact_phone VARCHAR(20),
     location VARCHAR(255),
+    about_us TEXT,
     established_year INT CHECK (established_year <= EXTRACT(YEAR FROM CURRENT_DATE)),
     website VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

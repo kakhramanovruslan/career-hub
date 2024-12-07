@@ -11,6 +11,7 @@ import com.project.authservice.model.company.CompanyRequest;
 import com.project.authservice.model.student.StudentRequest;
 import com.project.authservice.model.types.UserRole;
 import com.project.authservice.model.university.UniversityRequest;
+import com.project.authservice.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.project.authservice.mapper.RegisterRequestMapper;
@@ -42,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
     private final CompanyClient companyClient;
     private final UniversityClient universityClient;
     private final StudentClient studentClient;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -94,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
                         .build(),
                 token
         );
-        // emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
+        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
         return userDto;
     }
 
@@ -117,7 +119,7 @@ public class AuthServiceImpl implements AuthService {
                 .ownerId(userDto.getId())
                 .email(request.getEmail())
                 .build(), token);
-//        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
+        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
 
         return userDto;
     }
@@ -142,7 +144,7 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .universityId(userId)
                 .build(), token);
-//        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
+        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
 
         return userDto;
     }

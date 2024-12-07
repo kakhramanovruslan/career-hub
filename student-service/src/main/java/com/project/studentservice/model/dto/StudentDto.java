@@ -27,6 +27,8 @@ public class StudentDto {
 
     private Long ownerId;
 
+    private String aboutUs;
+
     private BigDecimal gpa;
 
     private String phoneNumber;

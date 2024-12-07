@@ -26,6 +26,8 @@ public class StudentRequest {
 
     private String phoneNumber;
 
+    private String aboutUs;
+
     @Enumerated(EnumType.STRING)
     private DegreeEnum degree;
 

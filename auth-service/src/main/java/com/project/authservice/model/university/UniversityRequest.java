@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UniversityRequest {
-    private Long ownerId; // К AuthService кто создал универ
+    private Long ownerId;
 
     private String name;
 
@@ -28,4 +28,6 @@ public class UniversityRequest {
     private Integer establishedYear;
 
     private String website;
+
+    private String aboutUs;
 }

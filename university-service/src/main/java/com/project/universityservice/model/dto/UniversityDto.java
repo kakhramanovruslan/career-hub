@@ -31,4 +31,6 @@ public class UniversityDto {
     private Integer establishedYear;
 
     private String website;
+
+    private String aboutUs;
 }
