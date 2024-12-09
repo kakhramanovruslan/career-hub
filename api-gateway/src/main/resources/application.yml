@@ -8,6 +8,7 @@ spring:
         university-server-url: http://localhost:8082
         company-server-url: http://localhost:8083
         auth-server-url: http://localhost:8084
+        review-server-url: http://localhost:8087
 
 server:
   port: 8080
