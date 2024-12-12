@@ -5,8 +5,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: //todo email
-    password: //todo password
+    username: kahramanovruslan085@gmail.com
+    password:
     protocol: smtp
     properties:
       mail:
@@ -15,7 +15,7 @@ spring:
           starttls:
             enable: true
     sender:
-      email: //todo email
+      email: kahramanovruslan085@gmail.com
 
 server:
   port: 8090

@@ -87,6 +87,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public UserDto companyRegister(RegisterRequest request, UserRole role, String token) {
         hasRole(role, List.of(UserRole.ADMIN));
+        String password = request.getPassword(); //TODO Change to temporary password
 
         UserDto userDto = register(request);
         companyClient.createCompanyProfile(
@@ -96,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
                         .build(),
                 token
         );
-        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
+        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
         return userDto;
     }
 
@@ -113,13 +114,13 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public UserDto registerUniversity(RegisterRequest request, UserRole role, String token) {
         hasRole(role, List.of(UserRole.ADMIN));
-
+        String password = request.getPassword(); //TODO Change to temporary password
         UserDto userDto = register(request);
         universityClient.createUniversityProfile(UniversityRequest.builder()
                 .ownerId(userDto.getId())
                 .email(request.getEmail())
                 .build(), token);
-        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
+        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
 
         return userDto;
     }
@@ -137,6 +138,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public UserDto registerStudent(RegisterRequest request, Long userId, UserRole role, String token) {
         hasRole(role, List.of(UserRole.UNIVERSITY));
+        String password = request.getPassword(); //TODO Change to temporary password
 
         UserDto userDto = register(request);
         studentClient.createStudentProfile(StudentRequest.builder()
@@ -144,7 +146,7 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .universityId(userId)
                 .build(), token);
-        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), request.getPassword());
+        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
 
         return userDto;
     }
