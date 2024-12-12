@@ -29,8 +29,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewUpdateRequestMapper reviewUpdateRequestMapper;
 
     @Override
-    public ReviewDto addReview(ReviewRequest reviewRequest, Long userId, UserRole role) {
-        Review review = reviewRepository.save(reviewRequestMapper.toEntity(reviewRequest, userId));
+    public ReviewDto addReview(ReviewRequest reviewRequest, Long userId, UserRole senderRole) {
+        Review review = reviewRepository.save(reviewRequestMapper.toEntity(reviewRequest, userId, senderRole));
         return reviewDtoMapper.toDto(review);
     }
 

@@ -11,7 +11,6 @@ public class AppExceptionResponse {
 
     private int status;
 
-
     private String message;
 
     @Builder.Default

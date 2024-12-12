@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReviewService {
 
-    ReviewDto addReview(ReviewRequest reviewRequest, Long userId, UserRole role);
+    ReviewDto addReview(ReviewRequest reviewRequest, Long userId, UserRole senderRole);
 
     void updateReview(Long id, ReviewUpdateRequest reviewUpdateRequest, Long userId, UserRole role);
 

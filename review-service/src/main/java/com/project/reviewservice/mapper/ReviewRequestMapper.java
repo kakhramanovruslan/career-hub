@@ -2,6 +2,7 @@ package com.project.reviewservice.mapper;
 
 import com.project.reviewservice.model.dto.ReviewRequest;
 import com.project.reviewservice.model.entity.Review;
+import com.project.reviewservice.model.enums.UserRole;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -9,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface ReviewRequestMapper {
 
     @Mapping(source = "senderId", target = "senderId")
-    Review toEntity(ReviewRequest reviewRequest, Long senderId);
+    @Mapping(source = "senderRole", target = "senderRole")
+    Review toEntity(ReviewRequest reviewRequest, Long senderId, UserRole senderRole);
 
 }

@@ -1,5 +1,6 @@
 package com.project.reviewservice.model.entity;
 
+import com.project.reviewservice.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,14 @@ public class Review {
 
     @Column(name = "rating", nullable = false)
     private Integer rating;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sender_role", nullable = false)
+    private UserRole senderRole;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recipient_role", nullable = false)
+    private UserRole recipientRole;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
