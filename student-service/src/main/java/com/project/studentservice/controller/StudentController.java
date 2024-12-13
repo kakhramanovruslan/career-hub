@@ -30,13 +30,14 @@ public class StudentController {
                                                         @RequestParam(required = false) String lastName,
                                                         @RequestParam(required = false) DegreeEnum degree,
                                                         @RequestParam(required = false) Integer currentYear,
+                                                        @RequestParam(required = false) Long universityId,
                                                         @RequestParam(required = false) Double minGpa,
                                                         @RequestParam(required = false) Double maxGpa,
                                                         @RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "10") int size){
 
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, minGpa, maxGpa, pageable));
+        return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, universityId, minGpa, maxGpa, pageable));
     }
 
     @GetMapping("/getBatch")

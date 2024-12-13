@@ -19,8 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,8 +79,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Double minGpa, Double maxGpa, Pageable pageable) {
-        Page<Student> students = studentRepository.findAll(StudentSpecification.withFilters(firstName, lastName, degree, currentYear, minGpa, maxGpa), pageable);
+    public Page<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Long universityId, Double minGpa, Double maxGpa, Pageable pageable) {
+        Page<Student> students = studentRepository.findAll(StudentSpecification.withFilters(firstName, lastName, degree, currentYear, universityId,  minGpa, maxGpa), pageable);
         return students.map(studentDtoMapper::toDto);
     }
 

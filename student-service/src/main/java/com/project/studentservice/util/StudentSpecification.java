@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 public class StudentSpecification {
-    public static Specification<Student> withFilters(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Double minGpa, Double maxGpa){
+    public static Specification<Student> withFilters(String firstName, String lastName, DegreeEnum degree, Integer currentYear, Long universityId, Double minGpa, Double maxGpa){
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -55,6 +55,14 @@ public class StudentSpecification {
             } else if (maxGpa != null) {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("gpa"), maxGpa));
             }
+
+            //Фильтр по айди университета
+            Optional.ofNullable(universityId)
+                    .ifPresent(id ->
+                            predicates.add(
+                                    criteriaBuilder.equal(root.get("universityId"), id)
+                            )
+                    );
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
