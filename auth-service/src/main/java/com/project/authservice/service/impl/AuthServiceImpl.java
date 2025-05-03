@@ -31,6 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementation of the {@link AuthService} interface providing methods for user authentication and registration.
+ * It includes operations such as registering a user, logging in, deleting users, and managing company, university,
+ * and student profiles.
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -45,6 +50,13 @@ public class AuthServiceImpl implements AuthService {
     private final StudentClient studentClient;
     private final EmailService emailService;
 
+    /**
+     * Registers a new user in the system.
+     *
+     * @param registerRequest The registration data for the user.
+     * @return The registered user details as a {@link UserDto}.
+     * @throws UserAlreadyExistException If the user with the same username already exists.
+     */
     @Override
     @Transactional
     public UserDto register(RegisterRequest registerRequest) throws UserAlreadyExistException {
@@ -58,6 +70,13 @@ public class AuthServiceImpl implements AuthService {
         return userDtoMapper.toDto(user);
     }
 
+    /**
+     * Logs in a user with the provided credentials.
+     *
+     * @param authRequest The login credentials for the user.
+     * @return The authentication response containing the generated JWT token.
+     * @throws IncorrectCredentialsException If the credentials are incorrect.
+     */
     @Override
     @Transactional
     public AuthResponse login(AuthRequest authRequest) throws IncorrectCredentialsException {
@@ -74,15 +93,29 @@ public class AuthServiceImpl implements AuthService {
         return authResponse;
     }
 
+    /**
+     * Deletes a user from the system by their ID.
+     *
+     * @param userId The ID of the user to delete.
+     * @throws UserNotFoundException If no user exists with the given ID.
+     */
     @Override
     @Transactional
     public void delete(Long userId) {
-         authRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ExceptionMessages
+        authRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ExceptionMessages
                 .USER_NOT_FOUND));
 
         authRepository.deleteById(userId);
     }
 
+    /**
+     * Registers a company in the system.
+     *
+     * @param request The registration data for the company.
+     * @param role The role of the user initiating the request.
+     * @param token The authentication token of the requester.
+     * @return The registered company details as a {@link UserDto}.
+     */
     @Override
     @Transactional
     public UserDto companyRegister(RegisterRequest request, UserRole role, String token) {
@@ -101,6 +134,13 @@ public class AuthServiceImpl implements AuthService {
         return userDto;
     }
 
+    /**
+     * Deletes a company from the system by its owner's ID.
+     *
+     * @param id The ID of the company owner.
+     * @param role The role of the user initiating the request.
+     * @param token The authentication token of the requester.
+     */
     @Override
     @Transactional
     public void companyDelete(Long id, UserRole role, String token) {
@@ -110,6 +150,14 @@ public class AuthServiceImpl implements AuthService {
         delete(id);
     }
 
+    /**
+     * Registers a university in the system.
+     *
+     * @param request The registration data for the university.
+     * @param role The role of the user initiating the request.
+     * @param token The authentication token of the requester.
+     * @return The registered university details as a {@link UserDto}.
+     */
     @Override
     @Transactional
     public UserDto registerUniversity(RegisterRequest request, UserRole role, String token) {
@@ -125,6 +173,13 @@ public class AuthServiceImpl implements AuthService {
         return userDto;
     }
 
+    /**
+     * Deletes a university from the system by its owner's ID.
+     *
+     * @param id The ID of the university owner.
+     * @param role The role of the user initiating the request.
+     * @param token The authentication token of the requester.
+     */
     @Override
     @Transactional
     public void universityDelete(Long id, UserRole role, String token) {
@@ -134,6 +189,15 @@ public class AuthServiceImpl implements AuthService {
         delete(id);
     }
 
+    /**
+     * Registers a student in the system.
+     *
+     * @param request The registration data for the student.
+     * @param userId The ID of the university associated with the student.
+     * @param role The role of the user initiating the request.
+     * @param token The authentication token of the requester.
+     * @return The registered student details as a {@link UserDto}.
+     */
     @Override
     @Transactional
     public UserDto registerStudent(RegisterRequest request, Long userId, UserRole role, String token) {
@@ -151,6 +215,13 @@ public class AuthServiceImpl implements AuthService {
         return userDto;
     }
 
+    /**
+     * Deletes a student from the system by their ID.
+     *
+     * @param userId The ID of the student to delete.
+     * @param role The role of the user initiating the request.
+     * @param token The authentication token of the requester.
+     */
     @Override
     @Transactional
     public void studentDelete(Long userId, UserRole role, String token) {
@@ -160,9 +231,15 @@ public class AuthServiceImpl implements AuthService {
         studentClient.deleteStudentProfileByOwnerId(userId, token);
     }
 
+    /**
+     * Checks if the current user has one of the required roles.
+     *
+     * @param currentRole The role of the current user.
+     * @param requiredRoles The list of roles that are allowed to perform the action.
+     * @throws AccessDeniedException If the current role is not one of the required roles.
+     */
     private boolean hasRole(UserRole currentRole, List<UserRole> requiredRoles) throws AccessDeniedException {
         if (!requiredRoles.contains(currentRole)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
         return true;
     }
-
 }

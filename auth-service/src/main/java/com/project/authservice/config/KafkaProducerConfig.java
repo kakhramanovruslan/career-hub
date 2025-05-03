@@ -11,9 +11,17 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Configuration class for setting up Kafka producer for sending email messages.
+ */
 @Configuration
 public class KafkaProducerConfig {
 
+    /**
+     * Creates a producer factory for sending EmailMessageDto objects to Kafka.
+     *
+     * @return the configured ProducerFactory
+     */
     @Bean
     public ProducerFactory<String, EmailMessageDto> emailProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -23,6 +31,11 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
+    /**
+     * Creates a KafkaTemplate for sending EmailMessageDto objects to Kafka.
+     *
+     * @return the KafkaTemplate
+     */
     @Bean
     public KafkaTemplate<String, EmailMessageDto> emailKafkaTemplate() {
         return new KafkaTemplate<>(emailProducerFactory());

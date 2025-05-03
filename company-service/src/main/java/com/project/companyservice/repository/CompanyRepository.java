@@ -7,9 +7,20 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository for managing {@link Company} entities.
+ */
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long>,
-                                           JpaSpecificationExecutor<Company> {
+        JpaSpecificationExecutor<Company> {
+
+    /**
+     * Deletes a {@link Company} by its owner ID.
+     */
     void deleteByOwnerId(Long id);
+
+    /**
+     * Finds a {@link Company} by its owner ID.
+     */
     Optional<Company> findCompanyByOwnerId(Long id);
 }

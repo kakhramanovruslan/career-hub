@@ -16,12 +16,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Service implementation for managing favourite students for companies.
+ */
 @Service
 @RequiredArgsConstructor
 public class FavouriteStudentServiceImpl implements FavouriteStudentService {
+
     private final FavouriteStudentRepository favStudentRepository;
     private final CompanyRepository companyRepository;
 
+    /**
+     * Adds a student to the company's favourite list.
+     */
     @Override
     @Transactional
     public FavouriteStudent addFavouriteStudent(Long id, Long studentOwnerId, Long userId) {
@@ -38,6 +45,9 @@ public class FavouriteStudentServiceImpl implements FavouriteStudentService {
         return favStudentRepository.save(favouriteStudent);
     }
 
+    /**
+     * Deletes a student from the company's favourite list.
+     */
     @Override
     @Transactional
     public void deleteFavouriteStudent(Long id, Long studentOwnerId, Long userId) {
@@ -48,6 +58,9 @@ public class FavouriteStudentServiceImpl implements FavouriteStudentService {
         favStudentRepository.deleteFavouriteStudentByOwnerIdAndStudentId(id, studentOwnerId);
     }
 
+    /**
+     * Retrieves the list of favourite students for a company.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Long> getFavouriteStudentsByOwnerId(Long id, Long userId) {
@@ -62,6 +75,9 @@ public class FavouriteStudentServiceImpl implements FavouriteStudentService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Helper method to check if the user is the owner of the company.
+     */
     private void isOwner(Long id, Long ownerId) throws AccessDeniedException {
         if (!id.equals(ownerId)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }

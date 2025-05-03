@@ -6,6 +6,10 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configures routing rules for the API Gateway.
+ * Maps specific paths to target microservice URLs.
+ */
 @Configuration
 public class RouteConfig {
 
@@ -24,6 +28,12 @@ public class RouteConfig {
     @Value("${spring.cloud.gateway.routes.review-server-url}")
     private String reviewServiceUrl;
 
+    /**
+     * Defines routes for forwarding requests to the corresponding microservices.
+     *
+     * @param builder builder for route configuration
+     * @return configured {@link RouteLocator}
+     */
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()

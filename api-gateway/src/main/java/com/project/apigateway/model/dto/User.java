@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO representing a user with ID, username, password, and role.
+ */
 @Data
 @Builder
 @AllArgsConstructor

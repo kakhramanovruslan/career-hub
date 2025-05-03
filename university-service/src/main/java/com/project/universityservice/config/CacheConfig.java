@@ -10,18 +10,29 @@ import org.springframework.context.annotation.Primary;
 
 import java.time.Duration;
 
+/**
+ * Configuration class for setting up caching with Caffeine.
+ * Enables caching for the application and configures a cache manager
+ * using Caffeine to store cache entries for a specified duration and size.
+ */
 @Configuration
 @EnableCaching
 public class CacheConfig {
 
+    /**
+     * Configures and returns a {@link CacheManager} for managing caches with Caffeine.
+     * The cache entries will expire after 10 minutes and will store up to 100 records.
+     *
+     * @return a configured {@link CacheManager} using Caffeine.
+     */
     @Bean
     @Primary
     public CacheManager cacheManager() {
         var caffeineCacheManager = new CaffeineCacheManager("feignCache");
         caffeineCacheManager.setCaffeine(
                 Caffeine.newBuilder()
-                        .expireAfterWrite(Duration.ofMinutes(10)) // Данные устаревают через 10 минут
-                        .maximumSize(100) // Максимум 100 записей
+                        .expireAfterWrite(Duration.ofMinutes(10)) // Data expires after 10 minutes
+                        .maximumSize(100) // Maximum 100 entries
         );
         return caffeineCacheManager;
     }

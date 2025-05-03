@@ -6,16 +6,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.project.notificationservice.dto.EmailMessageDto;
 
+/**
+ * Implementation of the service for sending email notifications.
+ * Includes sending an email with account registration credentials.
+ */
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
     private final EmailProducer emailProducer;
 
+    /**
+     * Sends an email with account credentials after user registration.
+     *
+     * @param email    The recipient's email address
+     * @param username The username of the registered user
+     * @param password The password of the registered user
+     */
     @Override
     public void sendAccountRegistrationEmail(String email, String username, String password) {
-
-
         String body = String.format("""
         Hello, %s!
         
@@ -33,7 +42,6 @@ public class EmailServiceImpl implements EmailService {
         Best regards,
         The Career-Hub Team
         """, username, username, password);
-
 
         EmailMessageDto emailMessageDto = EmailMessageDto.builder()
                 .email(email)

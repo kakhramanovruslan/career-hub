@@ -5,7 +5,6 @@ import com.project.notificationservice.exception.SendingEmailFailedException;
 import com.project.notificationservice.util.ExceptionMessages;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,6 +13,10 @@ import com.project.notificationservice.service.EmailService;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Implementation of the {@link EmailService} interface for sending email notifications.
+ * This service uses JavaMailSender to send emails to users.
+ */
 @RequiredArgsConstructor
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -23,6 +26,12 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.sender.email}")
     private String sender;
 
+    /**
+     * Sends an email message using JavaMailSender.
+     *
+     * @param message The email message to be sent.
+     * @throws SendingEmailFailedException if the email could not be sent due to an error.
+     */
     @Override
     public void send(EmailMessageDto message) throws SendingEmailFailedException {
         try {

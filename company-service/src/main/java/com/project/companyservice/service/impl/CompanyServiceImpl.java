@@ -22,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service implementation for managing companies.
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -31,6 +34,9 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyDtoMapper companyDtoMapper;
     private final CompanyRequestMapper companyRequestMapper;
 
+    /**
+     * Retrieves a company by its owner ID.
+     */
     @Override
     public CompanyDto findCompanyByOwnerId(Long ownerId) {
         Optional<Company> company = companyRepository.findCompanyByOwnerId(ownerId);
@@ -41,6 +47,9 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
+    /**
+     * Creates a new company.
+     */
     @Override
     public CompanyDto createCompany(CompanyRequest companyRequest) {
         Company company = companyRepository.save(companyRequestMapper.toEntity(companyRequest));
@@ -49,6 +58,9 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDto;
     }
 
+    /**
+     * Updates the company details by its owner ID.
+     */
     @Override
     public void updateCompanyByOwnerId(Long ownerId, CompanyRequest companyRequest, Long userId) {
         Optional<Company> company = companyRepository.findCompanyByOwnerId(ownerId);
@@ -58,6 +70,9 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("Updating company with id {}", company.get().getId());
     }
 
+    /**
+     * Deletes a company by its owner ID.
+     */
     @Override
     @Transactional
     public void deleteCompanyByOwnerId(Long userId) {
@@ -68,18 +83,18 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("Company with id {} has been deleted", userId);
     }
 
+    /**
+     * Finds companies based on given filters (name, type, location, industry).
+     */
     @Override
     public Page<CompanyDto> findByFilter(String name, CompanyType type, String location, String industry, Pageable pageable) {
         Page<Company> companies = companyRepository.findAll(CompanySpecification.withFilters(name, type, location, industry), pageable);
         return companies.map(companyDtoMapper::toDto);
     }
 
-    private Company findCompanyOrThrow(Long id) throws CompanyNotFoundException {
-        Optional<Company> company = companyRepository.findById(id);
-        if(company.isEmpty()) throw new CompanyNotFoundException(ExceptionMessages.COMPANY_NOT_FOUND);
-        return company.get();
-    }
-
+    /**
+     * Helper method to check if the user is the owner of the company.
+     */
     private void isOwner(Long id, Long ownerId) throws AccessDeniedException {
         if (!id.equals(ownerId)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }

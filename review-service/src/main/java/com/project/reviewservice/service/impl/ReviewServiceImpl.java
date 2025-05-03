@@ -19,6 +19,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service implementation for managing reviews.
+ * Provides methods for adding, updating, deleting reviews, fetching reviews by recipient,
+ * and calculating average ratings for a recipient.
+ */
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
@@ -28,12 +33,29 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewDtoMapper reviewDtoMapper;
     private final ReviewUpdateRequestMapper reviewUpdateRequestMapper;
 
+    /**
+     * Adds a new review.
+     *
+     * @param reviewRequest the review data from the client.
+     * @param userId the ID of the user submitting the review.
+     * @param senderRole the role of the user submitting the review.
+     * @return the added review as a DTO.
+     */
     @Override
     public ReviewDto addReview(ReviewRequest reviewRequest, Long userId, UserRole senderRole) {
         Review review = reviewRepository.save(reviewRequestMapper.toEntity(reviewRequest, userId, senderRole));
         return reviewDtoMapper.toDto(review);
     }
 
+    /**
+     * Updates an existing review.
+     * Only the owner of the review is allowed to update it.
+     *
+     * @param id the ID of the review to be updated.
+     * @param reviewUpdateRequest the updated review data.
+     * @param userId the ID of the user requesting the update.
+     * @param role the role of the user requesting the update.
+     */
     @Override
     public void updateReview(Long id, ReviewUpdateRequest reviewUpdateRequest, Long userId, UserRole role) {
         Review review = reviewRepository.findById(id)
@@ -43,6 +65,14 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.save(reviewUpdateRequestMapper.updateReviewFromRequest(reviewUpdateRequest, review));
     }
 
+    /**
+     * Deletes an existing review.
+     * Only the owner of the review is allowed to delete it.
+     *
+     * @param id the ID of the review to be deleted.
+     * @param userId the ID of the user requesting the deletion.
+     * @param role the role of the user requesting the deletion.
+     */
     @Override
     public void deleteReview(Long id, Long userId, UserRole role) {
         Review review = reviewRepository.findById(id)
@@ -52,12 +82,25 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.delete(review);
     }
 
+    /**
+     * Retrieves a paginated list of reviews for a specific recipient.
+     *
+     * @param recipientId the ID of the recipient.
+     * @param pageable the pagination information.
+     * @return a paginated list of reviews for the recipient.
+     */
     @Override
     public Page<ReviewDto> getReviewsByRecipientId(Long recipientId, Pageable pageable) {
-        Page<Review> companies = reviewRepository.findAllByRecipientId(recipientId, pageable);
-        return companies.map(reviewDtoMapper::toDto);
+        Page<Review> reviews = reviewRepository.findAllByRecipientId(recipientId, pageable);
+        return reviews.map(reviewDtoMapper::toDto);
     }
 
+    /**
+     * Retrieves the average rating and total count of reviews for a specific recipient.
+     *
+     * @param recipientId the ID of the recipient.
+     * @return the average rating and total count of reviews for the recipient.
+     */
     @Override
     public AverageRatingResponse getAverageRating(Long recipientId) {
         Double averageRating = reviewRepository.getAverageRatingByRecipientId(recipientId);
@@ -69,6 +112,13 @@ public class ReviewServiceImpl implements ReviewService {
                 .build();
     }
 
+    /**
+     * Checks if the user requesting the operation is the owner of the review.
+     *
+     * @param id the ID of the user requesting the operation.
+     * @param ownerId the ID of the review's owner.
+     * @throws AccessDeniedException if the user is not the owner of the review.
+     */
     private void isOwner(Long id, Long ownerId) throws AccessDeniedException {
         if (!id.equals(ownerId)) throw new AccessDeniedException(ExceptionMessages.ACCESS_DENIED);
     }

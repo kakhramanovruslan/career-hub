@@ -13,11 +13,22 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+/**
+ * Security filter that checks JWT tokens for protected routes.
+ * Adds user ID and role to request headers if the token is valid.
+ */
 @RequiredArgsConstructor
 public class SecurityFilter implements WebFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
 
+    /**
+     * Intercepts HTTP requests to verify JWT token and authorize access.
+     *
+     * @param exchange the current server exchange
+     * @param chain    the web filter chain
+     * @return filtered response chain
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 
@@ -29,12 +40,11 @@ public class SecurityFilter implements WebFilter {
 
         String token = extractToken(exchange);
 
-        try{
-            if (token == null){
+        try {
+            if (token == null) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
-            }
-            else {
+            } else {
                 List<String> claims = jwtTokenUtil.validateTokenAndRetrieveClaims(token);
 
                 if (claims != null && !claims.isEmpty()) {
@@ -48,8 +58,7 @@ public class SecurityFilter implements WebFilter {
                             .build();
                 }
             }
-        }
-        catch(JWTVerificationException e){
+        } catch (JWTVerificationException e) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
@@ -57,6 +66,12 @@ public class SecurityFilter implements WebFilter {
         return chain.filter(exchange);
     }
 
+    /**
+     * Extracts JWT token from the Authorization header.
+     *
+     * @param exchange the current server exchange
+     * @return token string without "Bearer " prefix, or null if not present
+     */
     private String extractToken(ServerWebExchange exchange) {
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
         if (token != null && token.startsWith("Bearer ")) {

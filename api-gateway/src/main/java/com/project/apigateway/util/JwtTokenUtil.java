@@ -10,15 +10,31 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Utility class for validating and parsing JWT tokens.
+ */
 @Component
 public class JwtTokenUtil {
 
+    /**
+     * Secret key used to sign and verify JWT tokens.
+     */
     @Value("${jwt.secret}")
     private String secret;
 
+    /**
+     * Expected issuer of the JWT tokens.
+     */
     @Value("${jwt.issuer}")
     private String issuer;
 
+    /**
+     * Validates the given JWT token and retrieves user claims.
+     *
+     * @param token the JWT token string
+     * @return a list containing user ID and role
+     * @throws JWTVerificationException if the token is invalid or expired
+     */
     public List<String> validateTokenAndRetrieveClaims(String token) throws JWTVerificationException {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
                 .withSubject("user details")
