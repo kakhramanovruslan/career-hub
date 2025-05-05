@@ -45,10 +45,12 @@ Ensure you have the following installed:
 
 
 #### 1. Clone the repository
-    git clone https://github.com/kakhramanovruslan/career-hub
+    git clone https://github.com/kakhramanovruslan/Career-hub_17P.git
 #### 2. Navigate into the project directory
-    cd career-hub
-#### 3. Start docker-compose.yml file in each of service
+    cd Career-hub_17P
+#### 3. The current version of the project is located in the dev branch. To access all the latest files, please make sure to switch to the dev branch.
+    git checkout -b dev origin/dev
+#### 4. Start docker-compose.yml file in each of service
     docker-compose up -d
 
 #### Make sure the following services are running:
