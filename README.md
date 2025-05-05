@@ -49,7 +49,7 @@ Ensure you have the following installed:
 #### 2. The current version of the project is located in the dev branch. To access all the latest files, please make sure to switch to the dev branch.
     git checkout -b dev origin/dev
 #### 3. Navigate into the project directory
-    cd career-hub
+    cd Career-hub_17P
 #### 4. Start docker-compose.yml file in each of service
     docker-compose up -d
 
