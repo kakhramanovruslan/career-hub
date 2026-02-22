@@ -1,0 +1,86 @@
+version: '3'
+
+services:
+  university-service:
+    image: postgres:15
+    container_name: university_service_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: o130805o
+      POSTGRES_DB: university_service_db
+    ports:
+      - '5433:5432'
+
+  student-service:
+    image: postgres:15
+    container_name: student_service_db
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: student_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: o130805o
+
+  review-service:
+    image: postgres:15
+    container_name: review_service_db
+    restart: always
+    ports:
+      - "5437:5432"
+    environment:
+      POSTGRES_DB: review_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: o130805o
+
+  company-service:
+    image: postgres:15
+    container_name: company_service_db
+    restart: always
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: company_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: o130805o
+
+  auth-service:
+    image: postgres:15
+    container_name: auth_service_db
+    restart: always
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_DB: auth_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: o130805o
+
+  # Notification-service
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    networks:
+      - career-hub
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  # Notification-service
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    networks:
+      - career-hub
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+networks:
+  career-hub:
+    driver: bridge
