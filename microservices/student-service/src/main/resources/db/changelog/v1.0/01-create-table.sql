@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
--- changeset ruslan:1
-CREATE TABLE IF NOT EXISTS student (
+-- changeset ruslan:11
+CREATE TABLE IF NOT EXISTS student_schema.student (
     id SERIAL PRIMARY KEY,
     owner_id BIGINT NOT NULL UNIQUE,
     first_name VARCHAR(50),

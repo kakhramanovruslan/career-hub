@@ -1,59 +1,15 @@
 version: '3'
 
 services:
-  university-service:
+  career-hub-db:
     image: postgres:15
-    container_name: university_service_db
+    container_name: career-hub-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: o130805o
-      POSTGRES_DB: university_service_db
+      POSTGRES_DB: career-hub-db
     ports:
       - '5433:5432'
-
-  student-service:
-    image: postgres:15
-    container_name: student_service_db
-    restart: always
-    ports:
-      - "5434:5432"
-    environment:
-      POSTGRES_DB: student_service_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: o130805o
-
-  review-service:
-    image: postgres:15
-    container_name: review_service_db
-    restart: always
-    ports:
-      - "5437:5432"
-    environment:
-      POSTGRES_DB: review_service_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: o130805o
-
-  company-service:
-    image: postgres:15
-    container_name: company_service_db
-    restart: always
-    ports:
-      - "5435:5432"
-    environment:
-      POSTGRES_DB: company_service_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: o130805o
-
-  auth-service:
-    image: postgres:15
-    container_name: auth_service_db
-    restart: always
-    ports:
-      - "5436:5432"
-    environment:
-      POSTGRES_DB: auth_service_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: o130805o
 
   # Notification-service
   zookeeper:
