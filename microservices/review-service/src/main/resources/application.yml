@@ -2,7 +2,7 @@ spring:
   application:
     name: review-service
   datasource:
-    url: jdbc:postgresql://localhost:5437/review_service_db
+    url: jdbc:postgresql://localhost:5433/career-hub-db
     username: postgres
     password: o130805o
     driver-class-name: org.postgresql.Driver

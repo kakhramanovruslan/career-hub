@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
--- changeset ruslan:1
-CREATE TABLE IF NOT EXISTS review (
+-- changeset ruslan:9
+CREATE TABLE IF NOT EXISTS review_schema.review (
     id SERIAL PRIMARY KEY,
     recipient_id BIGINT NOT NULL, -- ID аккаунта, кому оставили отзыв
     sender_id BIGINT NOT NULL,   -- ID аккаунта, кто оставил отзыв

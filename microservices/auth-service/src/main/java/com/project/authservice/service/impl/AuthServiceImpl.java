@@ -130,7 +130,7 @@ public class AuthServiceImpl implements AuthService {
                         .build(),
                 token
         );
-        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
+//        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
         return userDto;
     }
 
@@ -168,7 +168,7 @@ public class AuthServiceImpl implements AuthService {
                 .ownerId(userDto.getId())
                 .email(request.getEmail())
                 .build(), token);
-        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
+//        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
 
         return userDto;
     }
@@ -210,7 +210,7 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .universityId(userId)
                 .build(), token);
-        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
+//        emailService.sendAccountRegistrationEmail(request.getEmail(), request.getUsername(), password);
 
         return userDto;
     }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "profile_photo")
+@Table(name = "profile_photo", schema = "auth_schema")
 public class ProfilePhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
