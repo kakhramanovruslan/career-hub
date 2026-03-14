@@ -12,7 +12,7 @@ import com.project.authservice.model.types.UserRole;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "auth_schema")
 public class User {
 
     @Id

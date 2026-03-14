@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
--- changeset ruslan:1
-CREATE TABLE IF NOT EXISTS users (
+-- changeset ruslan:2
+CREATE TABLE IF NOT EXISTS auth_schema.users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,

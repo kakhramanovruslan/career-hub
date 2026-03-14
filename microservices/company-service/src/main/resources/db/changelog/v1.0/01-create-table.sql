@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
--- changeset olzhas:1
-CREATE TABLE IF NOT EXISTS company (
+-- changeset olzhas:6
+CREATE TABLE IF NOT EXISTS company_schema.company (
     id SERIAL PRIMARY KEY,
     owner_id BIGINT NOT NULL UNIQUE,
     name VARCHAR(255),
@@ -18,12 +18,12 @@ CREATE TABLE IF NOT EXISTS company (
 );
 
 
--- changeset olzhas:2
-CREATE TABLE IF NOT EXISTS company_favourite_student_ids (
+-- changeset olzhas:7
+CREATE TABLE IF NOT EXISTS company_schema.company_favourite_student_ids (
     id SERIAL PRIMARY KEY,
     owner_id BIGINT NOT NULL,
     company_id BIGINT NOT NULL,
     student_id BIGINT NOT NULL,
-    FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE,
+    FOREIGN KEY (company_id) REFERENCES company_schema.company(id) ON DELETE CASCADE,
     UNIQUE (company_id, student_id)
 );

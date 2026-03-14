@@ -1,4 +1,7 @@
-CREATE TABLE IF NOT EXISTS university (
+--liquibase formatted sql
+
+-- changeset ruslan:13
+CREATE TABLE IF NOT EXISTS university_schema.university (
     id SERIAL PRIMARY KEY,
     owner_id BIGINT NOT NULL UNIQUE,
     name VARCHAR(100),
