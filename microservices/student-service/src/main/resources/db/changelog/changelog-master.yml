@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/v1.0/00-create-schema.sql
   - include:
       file: db/changelog/v1.0/01-create-table.sql
+  - include:
+      file: db/changelog/v1.0/02-create-company_search_queries-table.sql

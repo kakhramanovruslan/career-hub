@@ -10,6 +10,17 @@ services:
       POSTGRES_DB: career-hub-db
     ports:
       - '5433:5432'
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.19.4
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
 
   # Notification-service
   zookeeper:
@@ -40,3 +51,6 @@ services:
 networks:
   career-hub:
     driver: bridge
+
+volumes:
+  es_data:
