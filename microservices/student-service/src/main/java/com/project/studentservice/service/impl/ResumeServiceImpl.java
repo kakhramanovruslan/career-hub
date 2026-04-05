@@ -2,7 +2,6 @@ package com.project.studentservice.service.impl;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Refresh;
-import co.elastic.clients.elasticsearch.core.IndexResponse;
 import com.project.studentservice.model.document.StudentResumeDocument;
 import com.project.studentservice.model.dto.ResumeRequestDto;
 import com.project.studentservice.service.ResumeService;
@@ -21,7 +20,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     public void indexResume(ResumeRequestDto request) throws IOException {
         StudentResumeDocument document = new StudentResumeDocument(
-                request.id(),
+                request.studentId(),
                 request.skills(),
                 request.experience()
         );

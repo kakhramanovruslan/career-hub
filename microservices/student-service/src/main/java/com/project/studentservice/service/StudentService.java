@@ -61,20 +61,17 @@ public interface StudentService {
      */
     void updateStudentProfileByOwnerId(Long id, StudentRequest studentRequest, Long userId) throws SQLException;
 
-    /**
-     * Finds students based on various filters (e.g., name, degree, GPA).
-     *
-     * @param firstName the student's first name.
-     * @param lastName the student's last name.
-     * @param degreeEnum the student's degree.
-     * @param currentYear the student's current year.
-     * @param universityId the university ID.
-     * @param minGpa the minimum GPA.
-     * @param maxGpa the maximum GPA.
-     * @param pageable pagination information.
-     * @return a page of student DTOs matching the filters.
-     */
-    Page<StudentDto> findByFilter(String firstName, String lastName, DegreeEnum degreeEnum, Integer currentYear, Long universityId, Double minGpa, Double maxGpa, Pageable pageable);
+
+    Page<StudentDto> findByFilter(
+            String searchQuery,
+            DegreeEnum degree,
+            Integer currentYear,
+            Long universityId,
+            Double minGpa,
+            Double maxGpa,
+            Long companyId,
+            Pageable pageable
+    );
 
     /**
      * Finds students by a batch of owner IDs.

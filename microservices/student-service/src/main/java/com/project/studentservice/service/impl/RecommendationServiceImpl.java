@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,5 +73,25 @@ public class RecommendationServiceImpl implements RecommendationService {
                 combinedQuery,
                 students
         );
+    }
+
+    public List<Long> searchStudents(String query) throws IOException {
+        SearchResponse<StudentResumeDocument> response = elasticsearchClient.search(s -> s
+                        .index(INDEX_NAME)
+                        .size(10)
+                        .query(q -> q.multiMatch(mm -> mm
+                                .query(query)
+                                .fields("skills", "experience")
+                        ))
+                        .sort(so -> so.score(sc -> sc.order(SortOrder.Desc))),
+                StudentResumeDocument.class
+        );
+
+        return response.hits().hits().stream()
+                .map(Hit::source)
+                .filter(java.util.Objects::nonNull)
+                .map(StudentResumeDocument::getId)
+                .map(Long::valueOf)
+                .toList();
     }
 }

@@ -29,33 +29,31 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    /**
-     * Endpoint to search students based on various filters.
-     *
-     * @param firstName    the first name of the student (optional)
-     * @param lastName     the last name of the student (optional)
-     * @param degree       the degree of the student (optional)
-     * @param currentYear  the current year of the student (optional)
-     * @param universityId the university ID the student belongs to (optional)
-     * @param minGpa       the minimum GPA for filtering students (optional)
-     * @param maxGpa       the maximum GPA for filtering students (optional)
-     * @param page         the page number for pagination (default: 0)
-     * @param size         the size of each page for pagination (default: 10)
-     * @return a page of students that match the provided filters
-     */
     @GetMapping("/search")
-    public ResponseEntity<Page<StudentDto>> getStudents(@RequestParam(required = false) String firstName,
-                                                        @RequestParam(required = false) String lastName,
-                                                        @RequestParam(required = false) DegreeEnum degree,
-                                                        @RequestParam(required = false) Integer currentYear,
-                                                        @RequestParam(required = false) Long universityId,
-                                                        @RequestParam(required = false) Double minGpa,
-                                                        @RequestParam(required = false) Double maxGpa,
-                                                        @RequestParam(defaultValue = "0") int page,
-                                                        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<StudentDto>> getStudents(
+            @RequestParam(required = false) String searchQuery,
+            @RequestParam(required = false) DegreeEnum degree,
+            @RequestParam(required = false) Integer currentYear,
+            @RequestParam(required = false) Long universityId,
+            @RequestParam(required = false) Double minGpa,
+            @RequestParam(required = false) Double maxGpa,
+            @RequestParam(required = true) Long companyId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok().body(studentService.findByFilter(firstName, lastName, degree, currentYear, universityId, minGpa, maxGpa, pageable));
+        return ResponseEntity.ok(
+                studentService.findByFilter(
+                        searchQuery,
+                        degree,
+                        currentYear,
+                        universityId,
+                        minGpa,
+                        maxGpa,
+                        companyId,
+                        pageable
+                )
+        );
     }
 
     /**

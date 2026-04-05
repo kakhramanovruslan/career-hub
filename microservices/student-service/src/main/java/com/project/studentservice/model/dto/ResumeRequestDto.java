@@ -3,7 +3,7 @@ package com.project.studentservice.model.dto;
 import java.util.List;
 
 public record ResumeRequestDto(
-        String id,
+        String studentId,
         List<String> skills,
         List<String> experience
 ) {}

@@ -55,4 +55,6 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
      * @return a page of students with the specified owner IDs.
      */
     Page<Student> findByOwnerIdIn(List<Long> studentOwnerIds, Pageable pageable);
+
+    List<Student> findByIdIn(List<Long> ids);
 }
