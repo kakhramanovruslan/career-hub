@@ -6,7 +6,7 @@ import com.project.studentservice.service.SearchQueryService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/search")
+@RequestMapping("student/api/search")
 public class SearchController {
 
     private final SearchQueryService service;

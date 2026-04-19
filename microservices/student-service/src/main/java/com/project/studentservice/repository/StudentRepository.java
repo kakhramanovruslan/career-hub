@@ -56,5 +56,5 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
      */
     Page<Student> findByOwnerIdIn(List<Long> studentOwnerIds, Pageable pageable);
 
-    List<Student> findByIdIn(List<Long> ids);
+    List<Student> findByOwnerIdIn(List<Long> ids);
 }

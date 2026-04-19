@@ -14,6 +14,7 @@ import com.project.studentservice.model.dto.StudentRequest;
 import com.project.studentservice.model.entity.Student;
 import com.project.studentservice.repository.StudentRepository;
 import com.project.studentservice.service.StudentService;
+import com.project.studentservice.util.StudentSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -131,6 +132,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Page<StudentDto> findByFilter(
+            String firstName,
+            String lastName,
             String searchQuery,
             DegreeEnum degree,
             Integer currentYear,
@@ -140,6 +143,11 @@ public class StudentServiceImpl implements StudentService {
             Long companyId,
             Pageable pageable
     ) {
+
+        if (companyId == null) {
+            Page<Student> students = studentRepository.findAll(StudentSpecification.withFilters(firstName, lastName, degree, currentYear, universityId, minGpa, maxGpa), pageable);
+            return students.map(studentDtoMapper::toDto);
+        }
 
         List<Long> studentIds;
 
@@ -153,10 +161,10 @@ public class StudentServiceImpl implements StudentService {
             return Page.empty(pageable);
         }
 
-        List<Student> students = studentRepository.findByIdIn(studentIds);
+        List<Student> students = studentRepository.findByOwnerIdIn(studentIds);
 
         Map<Long, Student> map = students.stream()
-                .collect(Collectors.toMap(Student::getId, Function.identity()));
+                .collect(Collectors.toMap(Student::getOwnerId, Function.identity()));
 
         List<Student> ordered = studentIds.stream()
                 .map(map::get)

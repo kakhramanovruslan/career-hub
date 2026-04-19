@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/resumes")
+@RequestMapping("student/api/resumes")
 public class ResumeController {
 
     private final ResumeService service;

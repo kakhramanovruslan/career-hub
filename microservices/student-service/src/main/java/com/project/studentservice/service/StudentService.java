@@ -63,6 +63,8 @@ public interface StudentService {
 
 
     Page<StudentDto> findByFilter(
+            String firstName,
+            String lastName,
             String searchQuery,
             DegreeEnum degree,
             Integer currentYear,

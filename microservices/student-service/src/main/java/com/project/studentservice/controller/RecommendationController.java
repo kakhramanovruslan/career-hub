@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/recommendations")
+@RequestMapping("student/api/recommendations")
 public class RecommendationController {
 
     private final RecommendationService service;

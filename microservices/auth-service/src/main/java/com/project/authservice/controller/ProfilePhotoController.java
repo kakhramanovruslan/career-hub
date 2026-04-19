@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequestMapping("/users/{userId}/profilePhoto")
+@RequestMapping("/auth/users/{userId}/profilePhoto")
 @RestController
 @RequiredArgsConstructor
 public class ProfilePhotoController {

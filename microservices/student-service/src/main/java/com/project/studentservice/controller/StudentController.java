@@ -31,19 +31,23 @@ public class StudentController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<StudentDto>> getStudents(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String searchQuery,
             @RequestParam(required = false) DegreeEnum degree,
             @RequestParam(required = false) Integer currentYear,
             @RequestParam(required = false) Long universityId,
             @RequestParam(required = false) Double minGpa,
             @RequestParam(required = false) Double maxGpa,
-            @RequestParam(required = true) Long companyId,
+            @RequestParam(required = false) Long companyId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(
                 studentService.findByFilter(
+                        firstName,
+                        lastName,
                         searchQuery,
                         degree,
                         currentYear,
