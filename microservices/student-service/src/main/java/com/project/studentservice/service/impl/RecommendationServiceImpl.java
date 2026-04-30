@@ -34,7 +34,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         if (queries.isEmpty()) {
             return new RecommendationResponseDto(
                     false,
-                    "После поиска у вас появятся персональные рекомендации",
+                    "After searching, you will receive personalized recommendations.",
                     null,
                     List.of()
             );
