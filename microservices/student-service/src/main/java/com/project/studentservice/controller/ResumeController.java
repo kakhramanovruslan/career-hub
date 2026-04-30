@@ -1,5 +1,6 @@
 package com.project.studentservice.controller;
 
+import com.project.studentservice.model.document.StudentResumeDocument;
 import com.project.studentservice.model.dto.ResumeRequestDto;
 import com.project.studentservice.service.ResumeService;
 import org.springframework.web.bind.annotation.*;
@@ -19,5 +20,16 @@ public class ResumeController {
     @PostMapping
     public void index(@RequestBody ResumeRequestDto request) throws IOException {
         service.indexResume(request);
+    }
+
+    @GetMapping("/{studentId}")
+    public StudentResumeDocument getResume(@PathVariable String studentId) throws IOException {
+        return service.getResume(studentId);
+    }
+
+    @PutMapping("/{studentId}")
+    public void updateResume(@PathVariable String studentId,
+                             @RequestBody ResumeRequestDto request) throws IOException {
+        service.updateResume(studentId, request);
     }
 }
